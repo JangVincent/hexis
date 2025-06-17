@@ -3,19 +3,12 @@
   "name": "hexis-frontend",
   "compatibility_date": "2025-06-17",
   "site": {
-    "bucket": "./dist",
-    "entry-point": "."
+    "bucket": "./dist"
   },
   "build": {
     "command": "pnpm build",
     "cwd": "."
   },
-  "routes": [
-    {
-      "pattern": "/*",
-      "script": "index"
-    }
-  ],
   "vars": {
     "ENVIRONMENT": "production"
   }
