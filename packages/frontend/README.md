@@ -1,10 +1,45 @@
-# Hexis Frontend
+# Hexis.cat Frontend
 
-> **React + TypeScript + Vite Frontend for Hexis Protocol**
+> **Modern Web Interface for Encrypted Publishing**
 
-The frontend application for Hexis, a publishing protocol for encrypted messages. Built with modern React and TypeScript for optimal developer experience and type safety.
+The frontend application for Hexis.cat, built with React and TypeScript to provide a seamless user experience for publishing and accessing encrypted messages.
 
-## 🚀 Quick Start
+## 🎯 Service Overview
+
+The frontend enables users to:
+- **Create and publish** encrypted messages
+- **Set access controls** and pricing
+- **View and decrypt** authorized messages
+- **Manage wallet connections** and payments
+
+## 🏗️ Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/    # React components
+│   ├── routes/        # TanStack Router routes
+│   ├── styles/        # Tailwind CSS styles
+│   └── utils/         # Utility functions
+├── public/           # Static assets
+└── vite.config.ts    # Vite configuration
+```
+
+### Tech Stack
+
+**Frontend**
+- React 19 + TypeScript
+- TanStack Router
+- Tailwind CSS v4
+- Vite
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- pnpm 10.7.0+
+
+### Installation & Development
 
 ```bash
 # Install dependencies
@@ -15,82 +50,36 @@ pnpm dev
 
 # Build for production
 pnpm build
-
-# Preview production build
-pnpm preview
-
-# Format code
-pnpm format
-
-# Lint code
-pnpm lint
 ```
 
-## 🛠️ Tech Stack
+## 📋 Development Status
 
-- **React 19** - Latest React with concurrent features
-- **TypeScript** - Type-safe development
-- **Vite** - Fast build tool and dev server
-- **TanStack Router** - Type-safe routing
-- **Tailwind CSS v4** - Utility-first CSS framework
-- **ESLint** - Code linting
-- **Biome** - Code formatting
+The frontend is currently in development:
+- ✅ Project structure configured
+- ✅ Basic UI components
+- ✅ Routing setup
+- 🔄 Core features implementation in progress
 
-## 📁 Project Structure
+## 🎨 Core Features (Planned)
 
-```
-src/
-├── main.tsx              # Application entry point
-├── routes/               # TanStack Router routes
-│   ├── __root.tsx        # Root layout
-│   └── index.tsx         # Home page
-├── routeTree.gen.ts      # Auto-generated route tree
-├── styles.css            # Global styles
-└── vite-env.d.ts         # Vite type definitions
-```
+- [ ] Message creation and encryption
+- [ ] Wallet connection and management
+- [ ] Access control interface
+- [ ] Payment integration
+- [ ] Message preview system
+- [ ] Responsive design
 
-## 🎨 Development
+## 🔐 Security & Privacy
 
-### Development Server
-The development server runs on `http://localhost:5173` by default with:
-- Hot Module Replacement (HMR)
-- Fast refresh for React components
-- TypeScript compilation
-- Tailwind CSS processing
+- Client-side encryption
+- Secure wallet integration
+- No data persistence
+- Privacy-focused design
+- Secure key management
 
-### Code Quality
-- **ESLint**: Configured with React and TypeScript rules
-- **Biome**: Code formatting and import organization
-- **TypeScript**: Strict type checking enabled
+## 📄 License
 
-### Build Process
-- TypeScript compilation with `tsc -b`
-- Vite build optimization
-- Code splitting and tree shaking
-- CSS optimization with Tailwind
-
-## 🔧 Configuration Files
-
-- `vite.config.ts` - Vite configuration with React and TanStack Router plugins
-- `tsconfig.json` - TypeScript configuration
-- `eslint.config.js` - ESLint configuration
-- `tailwind.config.js` - Tailwind CSS configuration (auto-generated)
-
-## 📦 Scripts
-
-| Script | Description |
-|--------|-------------|
-| `dev` | Start development server |
-| `build` | Build for production |
-| `preview` | Preview production build |
-| `lint` | Run ESLint |
-| `format` | Format code with Biome |
-
-## 🔗 Related
-
-- [Hexis Protocol Documentation](../README.md)
-- [Smart Contracts](../contract/README.md)
-- [Project Root](../../README.md)
+ISC License
 
 ---
 
