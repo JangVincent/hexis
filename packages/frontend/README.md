@@ -1,54 +1,97 @@
-# React + TypeScript + Vite
+# Hexis Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **React + TypeScript + Vite Frontend for Hexis Protocol**
 
-Currently, two official plugins are available:
+The frontend application for Hexis, a publishing protocol for encrypted messages. Built with modern React and TypeScript for optimal developer experience and type safety.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Quick Start
 
-## Expanding the ESLint configuration
+```bash
+# Install dependencies
+pnpm install
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Start development server
+pnpm dev
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# Build for production
+pnpm build
+
+# Preview production build
+pnpm preview
+
+# Format code
+pnpm format
+
+# Lint code
+pnpm lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **React 19** - Latest React with concurrent features
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and dev server
+- **TanStack Router** - Type-safe routing
+- **Tailwind CSS v4** - Utility-first CSS framework
+- **ESLint** - Code linting
+- **Biome** - Code formatting
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## 📁 Project Structure
+
 ```
+src/
+├── main.tsx              # Application entry point
+├── routes/               # TanStack Router routes
+│   ├── __root.tsx        # Root layout
+│   └── index.tsx         # Home page
+├── routeTree.gen.ts      # Auto-generated route tree
+├── styles.css            # Global styles
+└── vite-env.d.ts         # Vite type definitions
+```
+
+## 🎨 Development
+
+### Development Server
+The development server runs on `http://localhost:5173` by default with:
+- Hot Module Replacement (HMR)
+- Fast refresh for React components
+- TypeScript compilation
+- Tailwind CSS processing
+
+### Code Quality
+- **ESLint**: Configured with React and TypeScript rules
+- **Biome**: Code formatting and import organization
+- **TypeScript**: Strict type checking enabled
+
+### Build Process
+- TypeScript compilation with `tsc -b`
+- Vite build optimization
+- Code splitting and tree shaking
+- CSS optimization with Tailwind
+
+## 🔧 Configuration Files
+
+- `vite.config.ts` - Vite configuration with React and TanStack Router plugins
+- `tsconfig.json` - TypeScript configuration
+- `eslint.config.js` - ESLint configuration
+- `tailwind.config.js` - Tailwind CSS configuration (auto-generated)
+
+## 📦 Scripts
+
+| Script | Description |
+|--------|-------------|
+| `dev` | Start development server |
+| `build` | Build for production |
+| `preview` | Preview production build |
+| `lint` | Run ESLint |
+| `format` | Format code with Biome |
+
+## 🔗 Related
+
+- [Hexis Protocol Documentation](../README.md)
+- [Smart Contracts](../contract/README.md)
+- [Project Root](../../README.md)
+
+---
+
+**🜍 hexis.cat** — Publish what matters, hide what must.

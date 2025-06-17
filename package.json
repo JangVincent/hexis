@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "frontend": "pnpm --filter @hexis.cat/frontend"
+    "frontend": "pnpm --filter @hexis.cat/frontend",
+    "contract": "pnpm --filter @hexis.cat/contract"
   },
   "keywords": [],
   "author": "",
