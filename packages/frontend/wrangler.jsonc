@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hexis-frontend",
+  "compatibility_date": "2025-06-17",
+  "site": {
+    "bucket": "./dist",
+    "entry-point": "."
+  },
+  "build": {
+    "command": "pnpm build",
+    "cwd": "."
+  },
+  "routes": [
+    {
+      "pattern": "/*",
+      "script": "index"
+    }
+  ],
+  "vars": {
+    "ENVIRONMENT": "production"
+  }
+}
