@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "frontend": "pnpm --filter @hexis.cat/frontend",
+    "backend": "pnpm --filter @hexis.cat/backend",
     "contract": "pnpm --filter @hexis.cat/contract"
   },
   "keywords": [],
