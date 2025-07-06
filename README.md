@@ -1,3 +1,6 @@
+<img src="https://github.com/user-attachments/assets/f455f138-2c5a-42d3-874c-ecfaa0d3bd37" alt="HEXIS" width="64px" height="64px" />
+
+
 # Hexis
 
 > **Speak Freely, Share Privately**
