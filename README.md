@@ -1,4 +1,4 @@
-# Hexis.cat
+# Hexis
 
 > **Speak Freely, Share Privately**
 
