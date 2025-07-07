@@ -5,7 +5,8 @@
   "scripts": {
     "frontend": "pnpm --filter @hexis.cat/frontend",
     "backend": "pnpm --filter @hexis.cat/backend",
-    "contract": "pnpm --filter @hexis.cat/contract"
+    "contract": "pnpm --filter @hexis.cat/contract",
+    "dev": "pnpm run -r dev"
   },
   "keywords": [],
   "author": "",
