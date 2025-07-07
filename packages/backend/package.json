@@ -1,5 +1,5 @@
 {
-  "name": "@hexis.cat/backend",
+  "name": "@hexis/backend",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",

@@ -1,5 +1,5 @@
 {
-  "name": "@hexis.cat/contract",
+  "name": "@hexis/contract",
   "scripts": {
     "compile": "hardhat compile",
     "ignition:booth": "hardhat ignition deploy ignition/modules/HexisBooth.ts --network sepolia --verify",

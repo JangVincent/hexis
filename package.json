@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "frontend": "pnpm --filter @hexis.cat/frontend",
-    "backend": "pnpm --filter @hexis.cat/backend",
-    "contract": "pnpm --filter @hexis.cat/contract",
+    "frontend": "pnpm --filter @hexis/frontend",
+    "backend": "pnpm --filter @hexis/backend",
     "dev": "pnpm run -r dev"
   },
   "keywords": [],
