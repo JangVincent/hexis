@@ -9,50 +9,86 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as landingIndexRouteImport } from './routes/(landing)/index'
+import { Route as AccountSignInRouteImport } from './routes/account/sign-in'
+import { Route as AccountRegisterRouteImport } from './routes/account/register'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const landingIndexRoute = landingIndexRouteImport.update({
+  id: '/(landing)/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountSignInRoute = AccountSignInRouteImport.update({
+  id: '/account/sign-in',
+  path: '/account/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRegisterRoute = AccountRegisterRouteImport.update({
+  id: '/account/register',
+  path: '/account/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/sign-in': typeof AccountSignInRoute
+  '/': typeof landingIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/sign-in': typeof AccountSignInRoute
+  '/': typeof landingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/sign-in': typeof AccountSignInRoute
+  '/(landing)/': typeof landingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/account/register' | '/account/sign-in' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/account/register' | '/account/sign-in' | '/'
+  id: '__root__' | '/account/register' | '/account/sign-in' | '/(landing)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AccountRegisterRoute: typeof AccountRegisterRoute
+  AccountSignInRoute: typeof AccountSignInRoute
+  landingIndexRoute: typeof landingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/(landing)/': {
+      id: '/(landing)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof landingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/sign-in': {
+      id: '/account/sign-in'
+      path: '/account/sign-in'
+      fullPath: '/account/sign-in'
+      preLoaderRoute: typeof AccountSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/register': {
+      id: '/account/register'
+      path: '/account/register'
+      fullPath: '/account/register'
+      preLoaderRoute: typeof AccountRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AccountRegisterRoute: AccountRegisterRoute,
+  AccountSignInRoute: AccountSignInRoute,
+  landingIndexRoute: landingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

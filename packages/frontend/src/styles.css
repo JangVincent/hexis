@@ -1,1 +1,29 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+
+  --color-primary-500: #FED550;
+  --color-primary-300: #FEE9A3;
+  --color-primary-100: #FFF6D8;
+  --color-black: #18181A;
+  --color-gray-500: #FEE9A3;
+  --color-gray-100: #D8D8D8;
+  --color-gray-50: #F0F0F0;
+  --color-white: #FFFFFF;
+  --color-red-500: #CC0000;
+  --color-red-100: #EFADAD;
+
+  --max-container-width: 1088px;
+  --min-menu-width: 64px;
+  --max-menu-width: 290px;
+}
+
+@layer base {
+  body {
+    @apply bg-primary-100 overscroll-y-none;
+  }
+}
