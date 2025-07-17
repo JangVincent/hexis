@@ -1,6 +1,9 @@
 import { cn } from "@/lib/tailwind-utils";
 
-export default function Logo({ className, ...props }: LogoProps) {
+export default function Logo({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement> & { className?: string }) {
   return (
     <svg
       width="32"
