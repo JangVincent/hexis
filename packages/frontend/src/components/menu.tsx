@@ -15,9 +15,9 @@ export default function Menu() {
         )}
       >
         <Logo
-          width={64}
-          height={64}
-          className="mx-auto relative z-10 [&>g>.border]:hidden md:[&>g>.border]:block"
+          width={128}
+          height={128}
+          className="mx-auto relative z-10 border-x-2"
         />
       </Link>
 
