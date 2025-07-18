@@ -24,6 +24,6 @@
 
 @layer base {
   body {
-    @apply bg-primary-100 overscroll-y-none;
+    @apply bg-gray-50 overscroll-y-none;
   }
 }
