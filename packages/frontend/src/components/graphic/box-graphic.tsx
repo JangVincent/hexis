@@ -3,7 +3,7 @@ import styles from "./box-graphic.module.css";
 
 export default function BoxGraphic() {
   const cardCount = 6; // Number of cards to display
-  const scale = 2;
+  const scale = 1;
 
   return (
     <div
