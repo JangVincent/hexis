@@ -1,3 +1,4 @@
+import BoxGraphic from "@/components/graphic/box-graphic";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(landing)/")({
@@ -5,5 +6,11 @@ export const Route = createFileRoute("/(landing)/")({
 });
 
 function RouteComponent() {
-  return <div>Hexis.cat Coming Soon</div>;
+  return (
+    <div>
+      <div>
+        <BoxGraphic />
+      </div>
+    </div>
+  );
 }
