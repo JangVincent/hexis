@@ -80,8 +80,8 @@ export default function BoxGraphic() {
           height={86 * scale}
           className="absolute hover:-translate-y-3 transition-transform duration-300"
           style={{
-            bottom: 54 * scale - 10 * index * scale,
-            left: 59 * scale - 10 * index * scale,
+            bottom: 54 * scale - 6 * index * scale,
+            left: 59 * scale - 6 * index * scale,
             zIndex: 0,
           }}
         />
