@@ -9,7 +9,7 @@ function RouteComponent() {
   return (
     <main className="flex flex-col gap-2 justify-between h-full pb-2">
       <header className="py-14 space-y-6 px-4">
-        <h1 className="text-3xl md:text-5xl font-bold text-center text-pretty ">
+        <h1 className="text-4xl font-bold text-center text-pretty">
           Hide Your Text <br />
           Behind a Price Tag
         </h1>

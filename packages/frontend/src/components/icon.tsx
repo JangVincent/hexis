@@ -65,3 +65,25 @@ export function IconSignIn({
     </svg>
   );
 }
+
+export function IconClock({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-black", className)}
+      {...props}
+    >
+      <path
+        d="M16.8335 4.32001C23.4609 4.32001 28.8335 9.69259 28.8335 16.32C28.8335 22.9474 23.4609 28.32 16.8335 28.32C10.2061 28.32 4.8335 22.9474 4.8335 16.32C4.8335 9.69259 10.2061 4.32001 16.8335 4.32001ZM16.8335 6.32001C11.3106 6.32001 6.8335 10.7972 6.8335 16.32C6.8335 21.8429 11.3106 26.32 16.8335 26.32C22.3563 26.32 26.8335 21.8429 26.8335 16.32C26.8335 10.7972 22.3563 6.32001 16.8335 6.32001ZM16.8335 16.32H21.8335V18.32H14.8335V11.32H16.8335V16.32Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
