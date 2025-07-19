@@ -48,10 +48,10 @@ function MenuItem({
   return (
     <Link
       to={to}
-      className="flex items-center justify-center md:justify-start gap-3 p-4 hover:bg-black group group-hover:[&>path]:fill-black"
+      className="flex items-center justify-center md:justify-start gap-3 p-4 hover:bg-black focus:bg-black group"
     >
-      <Icon className="size-6 md:size-8 group-hover:text-white" />
-      <span className="hidden md:block text-xl font-bold group-hover:text-white">
+      <Icon className="size-6 md:size-8 group-hover:text-white group-focus:text-white" />
+      <span className="hidden md:block text-xl font-bold group-hover:text-white group-focus:text-white">
         {label}
       </span>
     </Link>
