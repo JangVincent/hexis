@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme {
   --font-sans: "Inter", sans-serif;
@@ -20,10 +20,27 @@
   --max-container-width: 1088px;
   --min-menu-width: 64px;
   --max-menu-width: 290px;
+  --max-main-width: calc(1088px - var(--min-menu-width) - 1px);
 }
 
 @layer base {
   body {
     @apply bg-gray-50 overscroll-y-none;
+  }
+
+  .main-container {
+    width: calc(100vw - 64px - 4px);
+  }
+
+  @media (min-width: 48rem) and (max-width: 1088px) {
+    .main-container {
+      width: calc(100vw - 290px - 4px);
+    }
+  }
+
+  @media (min-width: 1089px) {
+    .main-container {
+      width: calc(1088px - 290px - 4px);
+    }
   }
 }

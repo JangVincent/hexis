@@ -3,33 +3,12 @@ import BoxGraphic, {
 } from "@/components/graphic/box-graphic";
 import Marquee from "react-fast-marquee";
 
-import { useEffect, useLayoutEffect, useState } from "react";
 import { useEthPrice } from "@/requests/eth-price";
 
 export default function HeroImage() {
-  const [mainWidth, setMainWidth] = useState(0);
   const { data: ethPrice } = useEthPrice();
 
   const price = ethPrice || 0;
-
-  useLayoutEffect(() => {
-    const mainElement = document.getElementById("main");
-    if (mainElement) {
-      setMainWidth(mainElement.clientWidth);
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const mainElement = document.getElementById("main");
-      if (mainElement) {
-        setMainWidth(mainElement.clientWidth);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const scale = 2; // Adjust the scale as needed
   const cardGap = 8; // Adjust the gap between cards as needed
@@ -118,14 +97,8 @@ export default function HeroImage() {
   ];
 
   return (
-    <div className="w-full overflow-hidden">
-      <Marquee
-        speed={40}
-        className="w-full"
-        style={{
-          width: `${mainWidth}px`,
-        }}
-      >
+    <div className="w-full max-w-(--max-main-width) overflow-hidden">
+      <Marquee speed={40} className="w-full">
         {items.map((item, index) => (
           <BoxGraphic key={index} {...item} className="-ml-28 z-0" />
         ))}
