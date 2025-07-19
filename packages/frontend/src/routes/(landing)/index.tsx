@@ -1,4 +1,4 @@
-import BoxGraphic from "@/components/graphic/box-graphic";
+import HeroImage from "@/features/home/components/hero-image";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(landing)/")({
@@ -8,9 +8,7 @@ export const Route = createFileRoute("/(landing)/")({
 function RouteComponent() {
   return (
     <div>
-      <div>
-        <BoxGraphic />
-      </div>
+      <HeroImage />
     </div>
   );
 }
