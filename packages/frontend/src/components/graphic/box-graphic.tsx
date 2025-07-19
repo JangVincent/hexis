@@ -112,7 +112,7 @@ export default function BoxGraphic({
           key={index}
           width={79 * scale}
           height={86 * scale}
-          className="absolute hover:-translate-y-2 transition-transform duration-300"
+          className="absolute hover:-translate-y-5 focus:-translate-y-5 active:-translate-y-2 transition-transform duration-300"
           style={{
             bottom: 54 * scale - cardGap * index * scale,
             left: 59 * scale - cardGap * index * scale,
