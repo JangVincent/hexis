@@ -19,4 +19,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    VITE_API_HOST: JSON.stringify(process.env.VITE_API_HOST),
+  },
 });

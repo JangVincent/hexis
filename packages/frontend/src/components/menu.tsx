@@ -3,10 +3,11 @@ import styles from "./menu.module.css";
 import { cn } from "@/lib/tailwind-utils";
 import { IconHome, IconSearch, IconSignIn } from "./icon";
 import Logo from "./logo";
+import HealthIndicator from "@/features/health/components/health-indicator";
 
 export default function Menu() {
   return (
-    <nav>
+    <nav className="flex flex-col h-full">
       <Link
         to="/"
         className={cn(
@@ -32,6 +33,9 @@ export default function Menu() {
           <MenuItem to="/account/sign-in" icon={IconSignIn} label="SIGN IN" />
         </li>
       </menu>
+      <div className="flex-grow flex flex-col justify-end">
+        <HealthIndicator />
+      </div>
     </nav>
   );
 }
