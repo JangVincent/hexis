@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "border-2 bg-black border-black text-white bg-black [&>svg]:text-white font-bold after:pointer-events-none after:content-[''] after:absolute after:inset-0.25 after:border-2 after:border-white/30 hover:bg-white active:bg-white hover:[&>svg]:text-black active:[&>svg]:text-black hover:text-black active:text-black hover:after:border-black active:after:border-black [&:not(.loading)]:disabled:opacity-50 disabled:hover:bg-black disabled:active:bg-black disabled:hover:[&>svg]:text-white disabled:active:[&>svg]:text-white disabled:hover:text-white disabled:active:text-white disabled:hover:after:border-white disabled:active:after:border-white",
+          "border-2 bg-black border-black text-white bg-black [&>svg]:text-white font-bold after:pointer-events-none after:content-[''] after:absolute after:inset-0.25 after:border-2 after:border-white hover:bg-white active:bg-white hover:[&>svg]:text-black active:[&>svg]:text-black hover:text-black active:text-black hover:after:border-black active:after:border-black [&:not(.loading)]:disabled:opacity-50 disabled:hover:bg-black disabled:active:bg-black disabled:hover:[&>svg]:text-white disabled:active:[&>svg]:text-white disabled:hover:text-white disabled:active:text-white disabled:hover:after:border-white disabled:active:after:border-white",
         secondary:
-          "border-2 bg-white border-black text-black hover:bg-black active:bg-black hover:[&>svg]:text-white active:[&>svg]:text-white hover:text-white active:text-white font-bold",
+          "border-2 bg-white border-black text-black hover:bg-gray-100 font-bold after:content-[''] after:absolute after:inset-0.25 after:border-2 after:border-black/30",
         ghost: "bg-transparent hover:bg-gray-50 font-bold hover:underline",
       },
       size: {
