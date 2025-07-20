@@ -7,11 +7,9 @@ export const Route = createFileRoute("/search/")({
 
 function RouteComponent() {
   return (
-    <main>
-      <div>
-        <IconClock width={32} height={32} />
-        <p>Coming soon...</p>
-      </div>
+    <main className="w-full h-full flex justify-center items-center flex-col gap-2">
+      <IconClock width={64} height={64} />
+      <p className="font-bold">COMING SOON</p>
     </main>
   );
 }

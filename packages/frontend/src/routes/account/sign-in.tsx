@@ -1,9 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { IconClock } from "@/components/icon";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/account/sign-in')({
+export const Route = createFileRoute("/account/sign-in")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/account/sign-in"!</div>
+  return (
+    <main className="w-full h-full flex justify-center items-center flex-col gap-2">
+      <IconClock width={64} height={64} />
+      <p className="font-bold">COMING SOON</p>
+    </main>
+  );
 }

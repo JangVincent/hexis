@@ -1,5 +1,7 @@
+import { IconInfo, IconPlusBox } from "@/components/icon";
+import { Button } from "@/components/ui/button";
 import HeroImage from "@/features/home/components/hero-image";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(landing)/")({
   component: RouteComponent,
@@ -7,8 +9,9 @@ export const Route = createFileRoute("/(landing)/")({
 
 function RouteComponent() {
   return (
-    <main className="flex flex-col gap-2 justify-between h-full pb-2">
-      <header className="py-14 space-y-6 px-4">
+    <main className="flex flex-col gap-2 justify-between h-full pb-2 relative">
+      <div>{/* INTENTIONAL EMPTY */}</div>
+      <header className="py-14 space-y-6 px-4 absolute w-full bg-gradient-to-b from-gray-50 to-transparent">
         <h1 className="text-4xl font-bold text-center text-pretty">
           Hide Your Text <br />
           Behind a Price Tag
@@ -16,7 +19,24 @@ function RouteComponent() {
         <p className="text-center text-sm md:text-lg text-gray-600 leading-4">
           Sell Anything — As Long As It’s Text
         </p>
+        <div className="flex flex-col gap-2">
+          <Button className="w-full md:w-54 mx-auto">
+            <IconPlusBox />
+            <span>START SELLING</span>
+          </Button>
+          <Button
+            variant="secondary"
+            className="w-full md:w-54 mx-auto"
+            asChild
+          >
+            <Link to="/about">
+              <IconInfo />
+              <span className="tracking-tight">WTH is HEXIS?</span>
+            </Link>
+          </Button>
+        </div>
       </header>
+
       <div className="max-w-full">
         <HeroImage />
       </div>

@@ -49,7 +49,7 @@ export default function BoxGraphic({
       <FaceX
         width={91 * scale}
         height={62 * scale}
-        className="absolute"
+        className="absolute [&>rect]:fill-gray-100"
         style={{
           bottom: 67 * scale,
           left: 67 * scale,
@@ -61,7 +61,7 @@ export default function BoxGraphic({
       <FaceY
         width={68 * scale}
         height={129 * scale}
-        className="absolute"
+        className="absolute [&>path]:fill-gray-50"
         style={{
           bottom: 0,
           left: 0,
@@ -130,7 +130,6 @@ function FaceX(props: React.SVGProps<SVGSVGElement>) {
       width="91"
       height="62"
       viewBox="0 0 91 62"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -153,7 +152,6 @@ function FaceY(props: React.SVGProps<SVGSVGElement>) {
       width="68"
       height="129"
       viewBox="0 0 68 129"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -173,7 +171,6 @@ function FaceZ(props: React.SVGProps<SVGSVGElement>) {
       width="158"
       height="68"
       viewBox="0 0 158 68"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

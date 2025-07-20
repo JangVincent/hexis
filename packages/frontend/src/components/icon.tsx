@@ -87,3 +87,47 @@ export function IconClock({
     </svg>
   );
 }
+
+export function IconPlusBox({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-black", className)}
+      {...props}
+    >
+      <path
+        d="M29.8335 24.7341L25.2476 29.32H3.8335V7.90594L8.41943 3.32001H29.8335V24.7341ZM5.8335 27.32H23.8335V9.32001H5.8335V27.32ZM25.8335 8.73407V25.9059L27.8335 23.9059V6.73407L25.8335 8.73407ZM15.8335 17.32H20.8335V19.32H15.8335V24.32H13.8335V19.32H8.8335V17.32H13.8335V12.32H15.8335V17.32ZM7.24756 7.32001H24.4194L26.4194 5.32001H9.24756L7.24756 7.32001Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+export function IconInfo({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-black", className)}
+      {...props}
+    >
+      <path
+        d="M16 4.32001C22.6274 4.32001 28 9.69259 28 16.32C28 22.9474 22.6274 28.32 16 28.32C9.37258 28.32 4 22.9474 4 16.32C4 9.69259 9.37258 4.32001 16 4.32001ZM16 6.32001C10.4772 6.32001 6 10.7972 6 16.32C6 21.8429 10.4772 26.32 16 26.32C21.5228 26.32 26 21.8429 26 16.32C26 10.7972 21.5228 6.32001 16 6.32001ZM17 21.32H15V14H17V21.32ZM16 10.32C16.5523 10.32 17 10.7677 17 11.32C17 11.8723 16.5523 12.32 16 12.32C15.4477 12.32 15 11.8723 15 11.32C15 10.7677 15.4477 10.32 16 10.32Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}

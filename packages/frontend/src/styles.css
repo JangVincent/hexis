@@ -19,7 +19,7 @@
 
   --max-container-width: 1088px;
   --min-menu-width: 64px;
-  --max-menu-width: 290px;
+  --max-menu-width: 240px;
   --max-main-width: calc(1088px - var(--min-menu-width) - 1px);
 }
 
@@ -42,5 +42,16 @@
     .main-container {
       width: calc(1088px - 290px - 4px);
     }
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
