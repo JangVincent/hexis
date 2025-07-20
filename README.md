@@ -3,9 +3,9 @@
 
 # Hexis
 
-> **Speak Freely, Share Privately**
+> **YOUR TEXT, YOUR TERMS, NO GODS**
 
-Hexis is a publishing protocol for encrypted messages, designed for a world where privacy, expression, and control are in constant tension.
+Hexis is a simple decentralized tool for direct text sales. You sell your texts publicly, controlling who accesses them. It's a new philosophy for independent publishing, distribution, making any idea a business.
 
 ## 🎯 Service Overview
 
