@@ -27,7 +27,7 @@ export default function BoxGraphic({
   return (
     <div
       role="img"
-      className={cn("relative", styles.canvas, className)}
+      className={cn("relative select-none", styles.canvas, className)}
       style={
         {
           "--scale": scale,
