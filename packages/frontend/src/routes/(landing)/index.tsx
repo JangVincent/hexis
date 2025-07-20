@@ -11,7 +11,7 @@ function RouteComponent() {
   return (
     <main className="flex flex-col gap-2 justify-between h-full pb-2 relative">
       <div>{/* INTENTIONAL EMPTY */}</div>
-      <header className="py-14 space-y-6 px-4 absolute w-full bg-gradient-to-b from-gray-50 to-transparent">
+      <header className="py-14 space-y-6 px-4 absolute w-full bg-gradient-to-b from-white via-85% via-white to-white/10 z-10">
         <h1 className="text-4xl font-bold text-center text-pretty">
           Hide Your Text <br />
           Behind a Price Tag
