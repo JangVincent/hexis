@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/tailwind-utils";
 
 const buttonVariants = cva(
-  "cursor-pointer inline-flex items-center justify-center [&>svg]:shrink-0 relative transition-colors duration-200 disabled:cursor-not-allowed [&.loading]:animate-pulse",
+  "cursor-pointer inline-flex items-center justify-center [&>svg]:shrink-0 relative transition-colors duration-200 disabled:cursor-not-allowed [&.loading]:animate-pulse select-none",
   {
     variants: {
       variant: {
