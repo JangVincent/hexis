@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 
 .tanstack
+
+# Environment files
+.env
+.env.production
+.env.local
+.env.development
