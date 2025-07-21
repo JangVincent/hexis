@@ -1,8 +1,9 @@
 {
   "name": "@hexis/backend",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
+    "dev": "wrangler dev --config wrangler.dev.jsonc",
+    "deploy": "wrangler deploy --minify --config wrangler.prod.jsonc",
+    "deploy:dev": "wrangler deploy --minify --config wrangler.dev.jsonc",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {

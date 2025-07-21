@@ -4,6 +4,7 @@ import { logger } from "hono/logger";
 
 export type Bindings = {
   ENVIRONMENT: "development" | "production";
+  MY_VAR: string;
 };
 
 const app = new Hono<{
@@ -19,6 +20,7 @@ app.get("/", (c) => {
 });
 
 app.get("/health", (c) => {
+  console.log(c.env.MY_VAR);
   return c.json({ status: "ok", env: c.env.ENVIRONMENT });
 });
 
