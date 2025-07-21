@@ -2,11 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "hexis-backend",
   "main": "src/index.ts",
-  "compatibility_date": "2025-06-17",
-  "vars": {
-    "ENVIRONMENT": "development",
-    "MY_VAR": "dev-value"
-  }
+  "compatibility_date": "2025-06-17"
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],
