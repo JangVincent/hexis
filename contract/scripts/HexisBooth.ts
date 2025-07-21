@@ -3,6 +3,7 @@ import { vars } from "hardhat/config";
 import { http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
+import { TEST_CONTRACT_ADDRESS } from "../config/test";
 
 async function main() {
   const USER_PRIVATE_KEY = vars.get("USER_PRIVATE_KEY") as `0x${string}`;
@@ -18,7 +19,7 @@ async function main() {
 
   const contract = await hre.viem.getContractAt(
     "HexisBooth",
-    "0xe2334b02328A4B8ABAf074049E5E3D5615aC1c78",
+    TEST_CONTRACT_ADDRESS,
   );
 
   const price = await contract.read.price();
