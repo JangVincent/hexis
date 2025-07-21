@@ -21,7 +21,7 @@ app.get("/", (c) => {
 
 app.get("/health", (c) => {
   console.log(c.env.MY_VAR);
-  return c.json({ status: "ok", env: c.env });
+  return c.json({ status: "ok", env: c.env, v: 1 });
 });
 
 export default app;
