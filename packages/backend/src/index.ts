@@ -19,7 +19,7 @@ app.get("/", (c) => {
 });
 
 app.get("/health", (c) => {
-  return c.json({ status: "ok", env: c.env, v: 1 });
+  return c.json({ status: "ok" });
 });
 
 export default app;
