@@ -43,6 +43,10 @@ backend/
 # Install dependencies
 pnpm install
 
+# Setup local environment
+cp .env.example .dev.vars
+# .dev.vars 파일을 편집하여 필요한 환경 변수 설정
+
 # Start development server
 pnpm dev
 
