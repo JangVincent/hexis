@@ -3,7 +3,7 @@
   "scripts": {
     "compile": "hardhat compile",
     "ignition:booth": "hardhat ignition deploy ignition/modules/HexisBooth.ts --network sepolia --verify",
-    "script:pixel": "hardhat run scripts/VoteManager.ts --network ronin"
+    "script:booth": "hardhat run scripts/HexisBooth.ts --network sepolia"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",

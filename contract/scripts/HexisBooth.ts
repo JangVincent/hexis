@@ -1,11 +1,79 @@
 import hre from "hardhat";
+import { vars } from "hardhat/config";
+import { http } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { sepolia } from "viem/chains";
 
 async function main() {
-  // HexisBooth 컨트랙트의 아티팩트와 주소를 명시적으로 지정해야 합니다.
-  // 예시로, 아티팩트와 constructor 파라미터가 없다고 가정합니다.
+  const USER_PRIVATE_KEY = vars.get("USER_PRIVATE_KEY") as `0x${string}`;
+  const ADMIN_PRIVATE_KEY = vars.get("ADMIN_PRIVATE_KEY") as `0x${string}`;
+
+  const userAccount = privateKeyToAccount(USER_PRIVATE_KEY);
+  const adminAccount = privateKeyToAccount(ADMIN_PRIVATE_KEY);
+
+  const publicClient = await hre.viem.getPublicClient({
+    chain: sepolia,
+    transport: http(),
+  });
+
   const contract = await hre.viem.getContractAt(
     "HexisBooth",
-    "0x5e0e2EF21721c1fF577b495427Eb426B5C2ABe8a",
+    "0xe2334b02328A4B8ABAf074049E5E3D5615aC1c78",
+  );
+
+  const price = await contract.read.price();
+  const isSaleStarted = await contract.read.saleStarted();
+
+  // Test instant sale
+  console.log("- FEE_RECEIVER:", await contract.read.FEE_RECEIVER());
+  console.log("- PREVIEW:", await contract.read.previewText());
+  console.log("- CURRENT SALE TYPE:", await contract.read.currentSaleType());
+  console.log("- PRICE: ", price);
+  console.log("- OWNER", await contract.read.owner());
+  console.log("- IS SALE START", isSaleStarted);
+
+  // start sale
+  if (!isSaleStarted) {
+    console.log("- Starting sale...");
+    const startSaleHash = await contract.write.startSale({
+      account: adminAccount,
+    });
+
+    await publicClient.waitForTransactionReceipt({
+      hash: startSaleHash,
+    });
+
+    console.log("- Transaction hash:", startSaleHash);
+  }
+
+  // Simulate a purchase
+  const hash = await contract.write.buyInstant({
+    account: userAccount,
+    value: price,
+  });
+
+  console.log("- Transaction hash:", hash);
+
+  const receipt = await publicClient.waitForTransactionReceipt({
+    hash,
+  });
+
+  console.log("- Transaction receipt:", receipt.transactionHash);
+
+  // WITHDRAW FUNDS
+  const withdrawHash = await contract.write.checkOut({
+    account: adminAccount,
+  });
+
+  console.log("- Withdraw transaction hash:", withdrawHash);
+
+  const withdrawReceipt = await publicClient.waitForTransactionReceipt({
+    hash: withdrawHash,
+  });
+
+  console.log(
+    "- Withdraw transaction receipt:",
+    withdrawReceipt.transactionHash,
   );
 }
 
