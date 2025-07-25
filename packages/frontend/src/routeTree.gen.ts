@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchIndexRouteImport } from './routes/search/index'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
-import { Route as landingIndexRouteImport } from './routes/(landing)/index'
+import { Route as homeIndexRouteImport } from './routes/(home)/index'
 import { Route as AccountSignInRouteImport } from './routes/account/sign-in'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 
@@ -25,8 +25,8 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   path: '/about/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const landingIndexRoute = landingIndexRouteImport.update({
-  id: '/(landing)/',
+const homeIndexRoute = homeIndexRouteImport.update({
+  id: '/(home)/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -44,14 +44,14 @@ const AccountRegisterRoute = AccountRegisterRouteImport.update({
 export interface FileRoutesByFullPath {
   '/account/register': typeof AccountRegisterRoute
   '/account/sign-in': typeof AccountSignInRoute
-  '/': typeof landingIndexRoute
+  '/': typeof homeIndexRoute
   '/about': typeof AboutIndexRoute
   '/search': typeof SearchIndexRoute
 }
 export interface FileRoutesByTo {
   '/account/register': typeof AccountRegisterRoute
   '/account/sign-in': typeof AccountSignInRoute
-  '/': typeof landingIndexRoute
+  '/': typeof homeIndexRoute
   '/about': typeof AboutIndexRoute
   '/search': typeof SearchIndexRoute
 }
@@ -59,7 +59,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/account/register': typeof AccountRegisterRoute
   '/account/sign-in': typeof AccountSignInRoute
-  '/(landing)/': typeof landingIndexRoute
+  '/(home)/': typeof homeIndexRoute
   '/about/': typeof AboutIndexRoute
   '/search/': typeof SearchIndexRoute
 }
@@ -77,7 +77,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/account/register'
     | '/account/sign-in'
-    | '/(landing)/'
+    | '/(home)/'
     | '/about/'
     | '/search/'
   fileRoutesById: FileRoutesById
@@ -85,7 +85,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AccountRegisterRoute: typeof AccountRegisterRoute
   AccountSignInRoute: typeof AccountSignInRoute
-  landingIndexRoute: typeof landingIndexRoute
+  homeIndexRoute: typeof homeIndexRoute
   AboutIndexRoute: typeof AboutIndexRoute
   SearchIndexRoute: typeof SearchIndexRoute
 }
@@ -106,11 +106,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(landing)/': {
-      id: '/(landing)/'
+    '/(home)/': {
+      id: '/(home)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof landingIndexRouteImport
+      preLoaderRoute: typeof homeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/sign-in': {
@@ -133,7 +133,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   AccountRegisterRoute: AccountRegisterRoute,
   AccountSignInRoute: AccountSignInRoute,
-  landingIndexRoute: landingIndexRoute,
+  homeIndexRoute: homeIndexRoute,
   AboutIndexRoute: AboutIndexRoute,
   SearchIndexRoute: SearchIndexRoute,
 }
