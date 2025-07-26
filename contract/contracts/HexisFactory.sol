@@ -3,12 +3,14 @@ pragma solidity ^0.8.20;
 
 import "./HexisBooth.sol";
 
-contract HexisBoothFactory {
-    event HexisBoothCreated(address indexed boothAddress, address indexed owner);
+contract HexisFactory {
+    // Events
+    event BoothCreated(address indexed boothAddress, address indexed owner);
 
     // Counts
     uint256 public boothCount;
 
+    // Create a new HexisBooth contract
     function createHexisBooth(
         address ownerAddress,
         string memory previewText,
@@ -25,7 +27,7 @@ contract HexisBoothFactory {
             paymentTokenAddress,
             saleType
         );
-        emit HexisBoothCreated(address(newBooth), ownerAddress);
+        emit BoothCreated(address(newBooth), ownerAddress);
         boothCount++;
         return newBooth;
     }
