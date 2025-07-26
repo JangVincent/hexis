@@ -1,4 +1,7 @@
 import hre from "hardhat";
+import "@nomicfoundation/hardhat-verify";
+import { Etherscan } from "@nomicfoundation/hardhat-verify/etherscan";
+
 import { formatEther, Hex, parseEther } from "viem";
 import { adminAccount, userAccount } from "../lib/account";
 import {
@@ -10,6 +13,9 @@ import {
 import { adminWallet, publicClient } from "../lib/client";
 import { deployToken, mintTestTokens } from "./TestToken";
 import { sleep } from "../lib/util";
+import { hardhat, sepolia } from "viem/chains";
+import { ETHERSCAN_API_KEY } from "../hardhat.config";
+import { source } from "../lib/source";
 
 const sleepSeconds = 12;
 
@@ -38,10 +44,6 @@ async function testBoothInstantSaleNative() {
   const startSaleHash = await contract.write.startSale();
 
   console.log("- Sale started:", startSaleHash);
-
-  //   await publicClient.waitForTransactionReceipt({
-  //     hash: startSaleHash,
-  //   });
 
   console.log("- Sale started successfully");
 
@@ -683,23 +685,65 @@ async function testBoothRequestSaleERC20() {
   console.groupEnd();
 }
 
-async function FactoryTest() {
-  console.log("Running Factory Tests...");
-  // const contract = await hre.viem.getContractAt("HexisBoothFactory", )
-  const contract = await hre.viem.deployContract("HexisBoothFactory", []);
+async function verifyContract({
+  contractAddress,
+}: {
+  contractAddress: Hex; // Optional, if you want to verify a specific contract
+}) {
+  const instance = new Etherscan(
+    ETHERSCAN_API_KEY,
+    "https://api.etherscan.io/api",
+    "https://sepolia.etherscan.io",
+    sepolia.id,
+  );
 
-  console.log("- Deployed HexisBoothFactory:", contract.address);
+  const isVerified = await instance.isVerified(contractAddress);
+
+  console.log("- Contract is verified:", isVerified);
+
+  if (isVerified) {
+    console.log("- Contract already verified, skipping verification.");
+    return;
+  }
+
+  console.log("- Verifying contract on Etherscan...");
+  const verificationResult = await instance.verify(
+    contractAddress,
+    JSON.stringify(source),
+    "contracts/HexisFactory.sol:HexisFactory",
+    "v0.8.28+commit.7893614a",
+    "",
+  );
+
+  console.log("- Verification result:", verificationResult);
+}
+
+async function deployFactoryContract() {
+  console.log("Running Factory Tests...");
+  const contract = await hre.viem.deployContract("HexisFactory", []);
+
+  console.log("- Deployed HexisFactory:", contract.address);
+
+  return await hre.viem.getContractAt("HexisFactory", contract.address);
 }
 
 async function main() {
-  console.log("Running HexisBooth tests...");
+  //   console.log("Running HexisBooth tests...");
 
-  await testBoothInstantSaleNative();
-  await testBoothInstantSaleERC20();
-  await testBoothRequestSaleNative();
-  await testBoothRequestSaleERC20();
+  //   await testBoothInstantSaleNative();
+  //   await testBoothInstantSaleERC20();
+  //   await testBoothRequestSaleNative();
+  //   await testBoothRequestSaleERC20();
 
-  console.log("HexisBooth tests completed successfully.");
+  //   console.log("HexisBooth tests completed successfully.");
+
+  const contract = await deployFactoryContract();
+
+  await sleep(20);
+
+  await verifyContract({
+    contractAddress: contract.address,
+  });
 }
 
 main()

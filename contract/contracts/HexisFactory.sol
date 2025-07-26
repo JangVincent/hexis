@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./HexisBooth.sol";
 
-contract HexisFactory {
+contract HexisFactory is Ownable {
     // Events
     event BoothCreated(address indexed boothAddress, address indexed owner);
 
@@ -31,5 +32,4 @@ contract HexisFactory {
         boothCount++;
         return newBooth;
     }
-    
 }
