@@ -1,3 +1,4 @@
+import hre from "hardhat";
 import { formatEther, Hex, parseEther } from "viem";
 import { adminAccount, userAccount } from "../lib/account";
 import {
@@ -10,7 +11,7 @@ import { adminWallet, publicClient } from "../lib/client";
 import { deployToken, mintTestTokens } from "./TestToken";
 import { sleep } from "../lib/util";
 
-const sleepSeconds = 6;
+const sleepSeconds = 12;
 
 const deployedTestTokenAddress: Hex | undefined =
   "0x45081e24fE95dEa81a56d80487825524c8ad6c69";
@@ -38,9 +39,9 @@ async function testBoothInstantSaleNative() {
 
   console.log("- Sale started:", startSaleHash);
 
-  await publicClient.waitForTransactionReceipt({
-    hash: startSaleHash,
-  });
+  //   await publicClient.waitForTransactionReceipt({
+  //     hash: startSaleHash,
+  //   });
 
   console.log("- Sale started successfully");
 
@@ -680,6 +681,14 @@ async function testBoothRequestSaleERC20() {
   });
   console.log("- Admin withdraw completed successfully");
   console.groupEnd();
+}
+
+async function FactoryTest() {
+  console.log("Running Factory Tests...");
+  // const contract = await hre.viem.getContractAt("HexisBoothFactory", )
+  const contract = await hre.viem.deployContract("HexisBoothFactory", []);
+
+  console.log("- Deployed HexisBoothFactory:", contract.address);
 }
 
 async function main() {

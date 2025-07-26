@@ -192,3 +192,4 @@ contract HexisBooth is Ownable {
         emit FundsWithdrawn(_msgSender(), amount, currentPaymentOption);
     }
 }
+
