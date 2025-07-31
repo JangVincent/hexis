@@ -764,14 +764,11 @@ async function deployTemplateContract({
 
 async function main() {
   console.log(`${"═".repeat(5)} Running Hexis Factory Tests ${"═".repeat(5)}`);
-  const templateContract = await deployTemplateContract({
-    deployedContractAddress: "0xf61BcE30b198B55E50Dd521b98Eaa1e85D835F3E",
-  });
+  const templateContract = await deployTemplateContract({});
 
   console.log(`${"═".repeat(5)} Running Hexis Factory Tests ${"═".repeat(5)}`);
   const factoryContract = await deployFactoryContract({
-    deployedContractAddress: "0x74C3eBDe7e9644AaB5ee6200CE9ED7614f29fE53",
-    templateContractAddress: templateContract.address,
+templateContractAddress: templateContract.address,
   });
 
   console.log(

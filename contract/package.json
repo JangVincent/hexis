@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ignition": "^0.15.11",
+    "solady": "^0.1.24",
     "viem": "^2.27.0"
   }
 }
