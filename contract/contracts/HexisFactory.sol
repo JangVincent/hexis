@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "solady/src/utils/LibClone.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "solady/src/auth/Ownable.sol";
 import "./HexisBooth.sol";
 
 contract HexisFactory is Ownable {
@@ -13,10 +13,10 @@ contract HexisFactory is Ownable {
     uint256 public boothCount;
 
     constructor(
-        address ownerAddress,
         address _hexisBoothImplementation, // 1단계에서 배포한 HexisBooth 주소
         address _feeReceiver
-    ) Ownable(ownerAddress) {
+    ) {
+        _initializeOwner(msg.sender);
         hexisBoothImplementation = _hexisBoothImplementation;
         feeReceiver = _feeReceiver;
     }

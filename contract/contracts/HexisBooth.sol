@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "solady/src/auth/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
@@ -36,7 +36,10 @@ contract HexisBooth is Ownable {
     event FundsCheckedOut(address indexed owner, uint256 grossAmount, uint256 feeAmount, uint256 netAmount, PaymentOption paymentOption);
     event FundsWithdrawn(address indexed owner, uint256 amount, PaymentOption paymentOption);
 
-    constructor(address initialOwner) Ownable(initialOwner) {}
+    constructor() {
+        _initializeOwner(msg.sender);
+        renounceOwnership(); // Prevents ownership transfer after initialization
+    }
 
     function initialize(
         address ownerAddress,
@@ -49,7 +52,7 @@ contract HexisBooth is Ownable {
     ) public {
         // 단 한번만 초기화될 수 있도록 owner가 설정되지 않았을 때만 실행
         require(owner() == address(0), "Already initialized");
-        _transferOwnership(ownerAddress);
+        _initializeOwner(ownerAddress);
 
         if (_paymentOption == PaymentOption.NativeCurrency) {
             require(_paymentTokenAddress == address(0), "ERC20 address must be zero for NativeCurrency");
@@ -109,26 +112,26 @@ contract HexisBooth is Ownable {
     function buyInstant() public payable {
         require(saleStarted, "Sale has not started.");
         require(currentSaleType == SaleType.InstantSale, "This is not an instant sale type. Use requestPurchase().");
-        require(!hasAccess[_msgSender()], "You already have access.");
-        _processPurchase(_msgSender());
-        emit ContentPurchased(_msgSender(), price, paymentTokenAddress, currentPaymentOption, currentSaleType);
+        require(!hasAccess[msg.sender], "You already have access.");
+        _processPurchase(msg.sender);
+        emit ContentPurchased(msg.sender, price, paymentTokenAddress, currentPaymentOption, currentSaleType);
     }
 
     function requestPurchase(string memory _contactInfo) public {
         require(saleStarted, "Sale has not started.");
         require(currentSaleType == SaleType.RequestSale, "This is not a request sale type. Use buyInstant().");
-        require(!hasRequested[_msgSender()], "You have already requested purchase.");
-        hasRequested[_msgSender()] = true;
-        emit PurchaseRequested(_msgSender(), _contactInfo);
+        require(!hasRequested[msg.sender], "You have already requested purchase.");
+        hasRequested[msg.sender] = true;
+        emit PurchaseRequested(msg.sender, _contactInfo);
     }
 
     function buyApproved() public payable {
         require(saleStarted, "Sale has not started.");
         require(currentSaleType == SaleType.RequestSale, "This is not a request sale type.");
-        require(isApprovedToBuy[_msgSender()], "Your purchase request has not been approved yet.");
-        require(!hasAccess[_msgSender()], "You already have access.");
-        _processPurchase(_msgSender());
-        emit ContentPurchased(_msgSender(), price, paymentTokenAddress, currentPaymentOption, currentSaleType);
+        require(isApprovedToBuy[msg.sender], "Your purchase request has not been approved yet.");
+        require(!hasAccess[msg.sender], "You already have access.");
+        _processPurchase(msg.sender);
+        emit ContentPurchased(msg.sender, price, paymentTokenAddress, currentPaymentOption, currentSaleType);
     }
 
     // --- Settlement and Withdrawal ---

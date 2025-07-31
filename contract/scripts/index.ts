@@ -10,7 +10,7 @@ import { deployToken, mintTestTokens } from "./TestToken";
 import { calculateTxFee, sleep } from "../lib/util";
 import { PaymentOption, SaleType } from "../lib/shared";
 
-const sleepSeconds = 12;
+const sleepSeconds = 5;
 
 const deployedTestTokenAddress: Hex | undefined =
   "0x45081e24fE95dEa81a56d80487825524c8ad6c69";
@@ -732,7 +732,6 @@ async function deployFactoryContract({
 
   console.log("Running Factory Tests...");
   const contract = await hre.viem.deployContract("HexisFactory", [
-    adminAccount.address,
     templateContractAddress,
     adminAccount.address,
   ]);
@@ -753,9 +752,7 @@ async function deployTemplateContract({
   }
 
   console.log("Running Template Tests...");
-  const contract = await hre.viem.deployContract("HexisBooth", [
-    adminAccount.address,
-  ]);
+  const contract = await hre.viem.deployContract("HexisBooth");
 
   console.log("- Deployed HexisBooth:", contract.address);
 
