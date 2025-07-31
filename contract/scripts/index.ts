@@ -4,33 +4,26 @@ import { Etherscan } from "@nomicfoundation/hardhat-verify/etherscan";
 
 import { formatEther, Hex, parseEther } from "viem";
 import { adminAccount, userAccount } from "../lib/account";
-import {
-  deployBoothInstantSaleERC20,
-  deployBoothInstantSaleNative,
-  deployBoothRequestSaleERC20,
-  deployBoothRequestSaleNative,
-} from "./HexisBooth";
+import { deployBooth } from "./HexisBooth";
 import { adminWallet, publicClient } from "../lib/client";
 import { deployToken, mintTestTokens } from "./TestToken";
-import { sleep } from "../lib/util";
-import { hardhat, sepolia } from "viem/chains";
-import { ETHERSCAN_API_KEY } from "../hardhat.config";
-import { source } from "../lib/source";
+import { calculateTxFee, sleep } from "../lib/util";
+import { PaymentOption, SaleType } from "../lib/shared";
 
 const sleepSeconds = 12;
 
 const deployedTestTokenAddress: Hex | undefined =
   "0x45081e24fE95dEa81a56d80487825524c8ad6c69";
 
-async function testBoothInstantSaleNative() {
+async function testBoothInstantSaleNative({
+  contractAddress,
+}: {
+  contractAddress: Hex;
+}) {
   // Deploying the HexisBooth contract with Instant Sale Native payment option
-  console.group("Contract Deployment");
+  console.group("◇ Contract Deployment");
 
-  const contract = await deployBoothInstantSaleNative({
-    ownerAddress: adminAccount.address,
-    previewText: "deployBoothInstantSaleERC20",
-    price: parseEther("0.001"),
-  });
+  const contract = await hre.viem.getContractAt("HexisBooth", contractAddress);
 
   console.log("- Deployed HexisBooth (Instant Sale Native):", contract.address);
 
@@ -39,7 +32,7 @@ async function testBoothInstantSaleNative() {
   await sleep(sleepSeconds);
 
   // Testing the startSale function
-  console.group("Starting Sale");
+  console.group("◇ Starting Sale");
 
   const startSaleHash = await contract.write.startSale();
 
@@ -52,16 +45,18 @@ async function testBoothInstantSaleNative() {
   await sleep(sleepSeconds);
 
   // Testing user purchase
-  console.group("User Purchase (Instant Sale Native)");
+  console.group("◇ User Purchase (Instant Sale Native)");
 
   const fundHash = await adminWallet.sendTransaction({
     to: userAccount.address,
     value: parseEther("0.001"),
   });
 
-  await publicClient.waitForTransactionReceipt({
+  const receiptFund = await publicClient.waitForTransactionReceipt({
     hash: fundHash,
   });
+
+  calculateTxFee(receiptFund);
 
   console.log("- User account funded:", fundHash);
 
@@ -72,9 +67,11 @@ async function testBoothInstantSaleNative() {
 
   console.log("- User purchase initiated:", purchaseHash);
 
-  await publicClient.waitForTransactionReceipt({
+  const receiptPurchase = await publicClient.waitForTransactionReceipt({
     hash: purchaseHash,
   });
+
+  calculateTxFee(receiptPurchase);
 
   console.log("- User purchase completed successfully");
 
@@ -83,14 +80,14 @@ async function testBoothInstantSaleNative() {
   await sleep(sleepSeconds);
 
   // Checking the purchase
-  console.group("Checking Purchase");
+  console.group("◇ Checking Purchase");
   const hasAccess = await contract.read.hasAccess([userAccount.address]);
   console.log("- User address:", userAccount.address);
   console.log("- User has access?:", hasAccess);
   console.groupEnd();
 
   // Showing the contract balance after purchase
-  console.group("Contract Balance");
+  console.group("◇ Contract Balance");
   const balance = await publicClient.getBalance({
     address: contract.address,
   });
@@ -105,16 +102,18 @@ async function testBoothInstantSaleNative() {
   await sleep(sleepSeconds);
 
   // Admin Check out
-  console.group("Admin Check Out");
+  console.group("◇ Admin Check Out");
   const checkOutHash = await contract.write.checkOut({
     account: adminAccount,
   });
 
   console.log("- Admin check out initiated:", checkOutHash);
 
-  await publicClient.waitForTransactionReceipt({
+  const receiptCheckout = await publicClient.waitForTransactionReceipt({
     hash: checkOutHash,
   });
+
+  calculateTxFee(receiptCheckout);
 
   console.log("- Admin check out completed successfully");
 
@@ -123,7 +122,7 @@ async function testBoothInstantSaleNative() {
   await sleep(sleepSeconds);
 
   // Check balance after check out
-  console.group("Contract Balance After Check Out");
+  console.group("◇ Contract Balance After Check Out");
   const balanceAfterCheckOut = await publicClient.getBalance({
     address: contract.address,
   });
@@ -148,54 +147,58 @@ async function testBoothInstantSaleNative() {
   await sleep(sleepSeconds);
 
   // Withdraw funds by admin
-  console.group("Admin Withdraw Funds");
+  console.group("◇ Admin Withdraw Funds");
   const withdrawHash = await contract.write.withdraw({
     account: adminAccount,
   });
   console.log("- Admin withdraw initiated:", withdrawHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptWithdraw = await publicClient.waitForTransactionReceipt({
     hash: withdrawHash,
   });
+
+  calculateTxFee(receiptWithdraw);
   console.log("- Admin withdraw completed successfully");
 }
 
-async function testBoothInstantSaleERC20() {
-  console.group("Deploy Test ERC20 Token");
+async function testBoothInstantSaleERC20({
+  contractAddress,
+}: {
+  contractAddress: Hex;
+}) {
+  console.group("◇ Deploy Test ERC20 Token");
   const token = await deployToken(deployedTestTokenAddress);
   console.log("- Deployed Test Token:", token.address);
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
-  console.group("Mint 100 Test Tokens to User Account");
+  console.group("◇ Mint 100 Test Tokens to User Account");
   const decimals = await token.read.decimals();
   const mintHash = await mintTestTokens({
     contractAddress: token.address,
     recipientAddress: userAccount.address,
     amount: BigInt(1000 * 10 ** decimals),
   });
-  await publicClient.waitForTransactionReceipt({
+  const receiptMint = await publicClient.waitForTransactionReceipt({
     hash: mintHash,
   });
+
+  calculateTxFee(receiptMint);
+
   console.log("- Minted Test Tokens to User Account:", mintHash);
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
-  console.group("User Account Balance");
+  console.group("◇ User Account Balance");
   const userBalance = await token.read.balanceOf([userAccount.address]);
   console.log("- User Account Balance:", formatEther(userBalance) + " Tokens");
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
-  console.group("Deploy HexisBooth with Instant Sale ERC20");
-  const contract = await deployBoothInstantSaleERC20({
-    ownerAddress: adminAccount.address,
-    previewText: "deployBoothInstantSaleERC20",
-    price: BigInt(100 * 10 ** decimals), // 100 Token
-    paymentTokenAddress: token.address,
-  });
+  console.group("◇ Deploy HexisBooth with Instant Sale ERC20");
+  const contract = await hre.viem.getContractAt("HexisBooth", contractAddress);
 
   console.log("- Deployed HexisBooth (Instant Sale ERC20):", contract.address);
   console.groupEnd();
@@ -203,19 +206,21 @@ async function testBoothInstantSaleERC20() {
   await sleep(sleepSeconds);
 
   // Testing the startSale function
-  console.group("Starting Sale");
+  console.group("◇ Starting Sale");
   const startSaleHash = await contract.write.startSale();
   console.log("- Sale started:", startSaleHash);
-  await publicClient.waitForTransactionReceipt({
+  const startSaleReceipt = await publicClient.waitForTransactionReceipt({
     hash: startSaleHash,
   });
+
+  calculateTxFee(startSaleReceipt);
   console.log("- Sale started successfully");
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
   // Testing user purchase
-  console.group("Approving Tokens for Purchase");
+  console.group("◇ Approving Tokens for Purchase");
   const approveHash = await token.write.approve(
     [contract.address, BigInt(100 * 10 ** decimals)],
     {
@@ -224,30 +229,33 @@ async function testBoothInstantSaleERC20() {
   );
 
   console.log("- Tokens approved for purchase:", approveHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptApprove = await publicClient.waitForTransactionReceipt({
     hash: approveHash,
   });
+
+  calculateTxFee(receiptApprove);
 
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
-  console.group("User Purchase (Instant Sale ERC20)");
+  console.group("◇ User Purchase (Instant Sale ERC20)");
   const purchaseHash = await contract.write.buyInstant({
     account: userAccount,
     value: 0n,
   });
   console.log("- User purchase initiated:", purchaseHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptPurchase = await publicClient.waitForTransactionReceipt({
     hash: purchaseHash,
   });
+  calculateTxFee(receiptPurchase);
   console.log("- User purchase completed successfully");
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
   // Checking the purchase
-  console.group("Checking Purchase");
+  console.group("◇ Checking Purchase");
   const hasAccess = await contract.read.hasAccess([userAccount.address]);
   console.log("- User address:", userAccount.address);
   console.log("- User has access?:", hasAccess);
@@ -256,7 +264,7 @@ async function testBoothInstantSaleERC20() {
   await sleep(sleepSeconds);
 
   // Showing the contract balance after purchase
-  console.group("Contract Balance");
+  console.group("◇ Contract Balance");
   const balance = await token.read.balanceOf([contract.address]);
   console.log(
     "- Contract balance after purchase:",
@@ -267,22 +275,23 @@ async function testBoothInstantSaleERC20() {
   await sleep(sleepSeconds);
 
   // Admin Check out
-  console.group("Admin Check Out");
+  console.group("◇ Admin Check Out");
   const checkOutHash = await contract.write.checkOut({
     account: adminAccount,
   });
 
   console.log("- Admin check out initiated:", checkOutHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptCheckout = await publicClient.waitForTransactionReceipt({
     hash: checkOutHash,
   });
+  calculateTxFee(receiptCheckout);
   console.log("- Admin check out completed successfully");
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
   // Check balance after check out
-  console.group("Contract Balance After Check Out");
+  console.group("◇ Contract Balance After Check Out");
   const balanceAfterCheckOut = await token.read.balanceOf([contract.address]);
   console.log(
     "- Contract balance after check out:",
@@ -303,44 +312,57 @@ async function testBoothInstantSaleERC20() {
   await sleep(sleepSeconds);
 
   // Withdraw funds by admin
-  console.group("Admin Withdraw Funds");
+  console.group("◇ Admin Withdraw Funds");
   const withdrawHash = await contract.write.withdraw({
     account: adminAccount,
   });
   console.log("- Admin withdraw initiated:", withdrawHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptWithdraw = await publicClient.waitForTransactionReceipt({
     hash: withdrawHash,
   });
+
+  calculateTxFee(receiptWithdraw);
   console.log("- Admin withdraw completed successfully");
   console.groupEnd();
 }
 
-async function testBoothRequestSaleNative() {
-  console.group("Contract Deployment");
-  const contract = await deployBoothRequestSaleNative({
-    ownerAddress: adminAccount.address,
-    previewText: "deployBoothRequestSaleNative",
-    price: parseEther("0.0001"),
-  });
+async function testBoothRequestSaleNative({
+  contractAddress,
+}: {
+  contractAddress: Hex;
+}) {
+  console.group("◇ Contract Deployment");
+  const contract = await hre.viem.getContractAt("HexisBooth", contractAddress);
   console.log("- Deployed HexisBooth (Request Sale Native):", contract.address);
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
   // Testing the startSale function
-  console.group("Starting Sale");
+  console.group("◇ Starting Sale");
   const startSaleHash = await contract.write.startSale();
   console.log("- Sale started:", startSaleHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptStartSale = await publicClient.waitForTransactionReceipt({
     hash: startSaleHash,
   });
+  calculateTxFee(receiptStartSale);
   console.log("- Sale started successfully");
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
+  // Fund the user account with enough ETH to cover the purchase
+  const fundHash = await adminWallet.sendTransaction({
+    to: userAccount.address,
+    value: parseEther("0.00015"),
+  });
+
+  await publicClient.waitForTransactionReceipt({
+    hash: fundHash,
+  });
+
   // Testing user purchase
-  console.group("User Request Purchase (Request Sale Native)");
+  console.group("◇ User Request Purchase (Request Sale Native)");
   const requestHash = await contract.write.requestPurchase(
     [
       "Hello, I want to buy this item! My telegram handle is @example, please contact me.",
@@ -349,21 +371,12 @@ async function testBoothRequestSaleNative() {
       account: userAccount,
     },
   );
-
-  // Fund the user account with enough ETH to cover the purchase
-  const fundHash = await adminWallet.sendTransaction({
-    to: userAccount.address,
-    value: parseEther("0.00015"),
-  });
-  await publicClient.waitForTransactionReceipt({
-    hash: fundHash,
-  });
-
   console.log("- User request purchase initiated:", requestHash);
-
-  await publicClient.waitForTransactionReceipt({
+  const receiptRequest = await publicClient.waitForTransactionReceipt({
     hash: requestHash,
   });
+
+  calculateTxFee(receiptRequest);
 
   console.log("- User request purchase completed successfully");
 
@@ -374,7 +387,7 @@ async function testBoothRequestSaleNative() {
   // Need to add server-side logic to save approval requests from users
 
   // Admin approves the request
-  console.group("Admin Approve Request");
+  console.group("◇ Admin Approve Request");
   const approveHash = await contract.write.approveRequest(
     [userAccount.address],
     {
@@ -384,9 +397,11 @@ async function testBoothRequestSaleNative() {
 
   console.log("- Admin approve request initiated:", approveHash);
 
-  await publicClient.waitForTransactionReceipt({
+  const receiptApprove = await publicClient.waitForTransactionReceipt({
     hash: approveHash,
   });
+
+  calculateTxFee(receiptApprove);
 
   console.log("- Admin approve request completed successfully");
 
@@ -395,16 +410,18 @@ async function testBoothRequestSaleNative() {
   await sleep(sleepSeconds);
 
   // User buys the content after approval
-  console.group("User Buy Content After Approval (Request Sale Native)");
+  console.group("◇ User Buy Content After Approval (Request Sale Native)");
   const purchaseHash = await contract.write.buyApproved({
     account: userAccount,
     value: parseEther("0.0001"),
   });
 
   console.log("- User buy content after approval initiated:", purchaseHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptPurchase = await publicClient.waitForTransactionReceipt({
     hash: purchaseHash,
   });
+
+  calculateTxFee(receiptPurchase);
 
   console.log("- User buy content after approval completed successfully");
 
@@ -413,14 +430,14 @@ async function testBoothRequestSaleNative() {
   await sleep(sleepSeconds);
 
   // Checking the purchase
-  console.group("Checking Purchase");
+  console.group("◇ Checking Purchase");
   const hasAccess = await contract.read.hasAccess([userAccount.address]);
   console.log("- User address:", userAccount.address);
   console.log("- User has access?:", hasAccess);
   console.groupEnd();
 
   // Showing the contract balance after purchase
-  console.group("Contract Balance");
+  console.group("◇ Contract Balance");
   const balance = await publicClient.getBalance({
     address: contract.address,
   });
@@ -434,16 +451,18 @@ async function testBoothRequestSaleNative() {
   await sleep(sleepSeconds);
 
   // Admin Check out
-  console.group("Admin Check Out");
+  console.group("◇ Admin Check Out");
   const checkOutHash = await contract.write.checkOut({
     account: adminAccount,
   });
 
   console.log("- Admin check out initiated:", checkOutHash);
 
-  await publicClient.waitForTransactionReceipt({
+  const receiptCheckout = await publicClient.waitForTransactionReceipt({
     hash: checkOutHash,
   });
+
+  calculateTxFee(receiptCheckout);
 
   console.log("- Admin check out completed successfully");
   console.groupEnd();
@@ -451,7 +470,7 @@ async function testBoothRequestSaleNative() {
   await sleep(sleepSeconds);
 
   // Check balance after check out
-  console.group("Contract Balance After Check Out");
+  console.group("◇ Contract Balance After Check Out");
   const balanceAfterCheckOut = await publicClient.getBalance({
     address: contract.address,
   });
@@ -475,27 +494,32 @@ async function testBoothRequestSaleNative() {
   await sleep(sleepSeconds);
 
   // Withdraw funds by admin
-  console.group("Admin Withdraw Funds");
+  console.group("◇ Admin Withdraw Funds");
   const withdrawHash = await contract.write.withdraw({
     account: adminAccount,
   });
   console.log("- Admin withdraw initiated:", withdrawHash);
-  await publicClient.waitForTransactionReceipt({
+
+  const receiptWithdraw = await publicClient.waitForTransactionReceipt({
     hash: withdrawHash,
   });
+
+  calculateTxFee(receiptWithdraw);
   console.log("- Admin withdraw completed successfully");
   console.groupEnd();
 }
 
-async function testBoothRequestSaleERC20() {
-  console.group("Deploying Test Token");
+async function testBoothRequestSaleERC20({
+  contractAddress,
+}: { contractAddress: Hex }) {
+  console.group("◇ Deploying Test Token");
   const token = await deployToken(deployedTestTokenAddress);
   console.log("- Deployed Test Token:", token.address);
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
-  console.group("Minting Test Tokens to User Account");
+  console.group("◇ Minting Test Tokens to User Account");
   const decimals = await token.read.decimals();
   const mintHash = await mintTestTokens({
     contractAddress: token.address,
@@ -515,13 +539,8 @@ async function testBoothRequestSaleERC20() {
 
   await sleep(sleepSeconds);
 
-  console.group("Testing HexisBooth Request Sale ERC20");
-  const contract = await deployBoothRequestSaleERC20({
-    ownerAddress: adminAccount.address,
-    previewText: "deployBoothRequestSaleERC20",
-    price: BigInt(100 * 10 ** decimals), // 100 Token
-    paymentTokenAddress: token.address,
-  });
+  console.group("◇ Testing HexisBooth Request Sale ERC20");
+  const contract = await hre.viem.getContractAt("HexisBooth", contractAddress);
 
   console.log("- Deployed HexisBooth (Request Sale ERC20):", contract.address);
   console.groupEnd();
@@ -529,19 +548,20 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // Testing the startSale function
-  console.group("Starting Sale");
+  console.group("◇ Starting Sale");
   const startSaleHash = await contract.write.startSale();
   console.log("- Sale started:", startSaleHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptStartSale = await publicClient.waitForTransactionReceipt({
     hash: startSaleHash,
   });
+  calculateTxFee(receiptStartSale);
   console.log("- Sale started successfully");
   console.groupEnd();
 
   await sleep(sleepSeconds);
 
   // Testing user purchase
-  console.group("User Request Purchase (Request Sale ERC20)");
+  console.group("◇ User Request Purchase (Request Sale ERC20)");
   const requestHash = await contract.write.requestPurchase(
     [
       "Hello, I want to buy this item! My telegram handle is @example, please contact me.",
@@ -552,9 +572,11 @@ async function testBoothRequestSaleERC20() {
   );
 
   console.log("- User request purchase initiated:", requestHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptRequest = await publicClient.waitForTransactionReceipt({
     hash: requestHash,
   });
+
+  calculateTxFee(receiptRequest);
 
   console.log("- User request purchase completed successfully");
   console.groupEnd();
@@ -562,7 +584,7 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // Approve token for purchase
-  console.group("Approving Tokens for Purchase");
+  console.group("◇ Approving Tokens for Purchase");
   const tokenApproveHash = await token.write.approve(
     [contract.address, BigInt(100 * 10 ** decimals)],
     {
@@ -570,9 +592,10 @@ async function testBoothRequestSaleERC20() {
     },
   );
   console.log("- Tokens approved for purchase:", tokenApproveHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptApprove = await publicClient.waitForTransactionReceipt({
     hash: tokenApproveHash,
   });
+  calculateTxFee(receiptApprove);
   console.groupEnd();
 
   await sleep(sleepSeconds);
@@ -580,7 +603,7 @@ async function testBoothRequestSaleERC20() {
   // Need to add server-side logic to save approval requests from users
 
   // Admin approves the request
-  console.group("Admin Approve Request");
+  console.group("◇ Admin Approve Request");
   const approveHash = await contract.write.approveRequest(
     [userAccount.address],
     {
@@ -589,9 +612,10 @@ async function testBoothRequestSaleERC20() {
   );
 
   console.log("- Admin approve request initiated:", approveHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptAdminApprove = await publicClient.waitForTransactionReceipt({
     hash: approveHash,
   });
+  calculateTxFee(receiptAdminApprove);
 
   console.log("- Admin approve request completed successfully");
   console.groupEnd();
@@ -599,16 +623,18 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // User buys the content after approval
-  console.group("User Buy Content After Approval (Request Sale ERC20)");
+  console.group("◇ User Buy Content After Approval (Request Sale ERC20)");
   const purchaseHash = await contract.write.buyApproved({
     account: userAccount,
     value: 0n,
   });
 
   console.log("- User buy content after approval initiated:", purchaseHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptPurchase = await publicClient.waitForTransactionReceipt({
     hash: purchaseHash,
   });
+
+  calculateTxFee(receiptPurchase);
 
   console.log("- User buy content after approval completed successfully");
   console.groupEnd();
@@ -616,7 +642,7 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // Checking the purchase
-  console.group("Checking Purchase");
+  console.group("◇ Checking Purchase");
   const hasAccess = await contract.read.hasAccess([userAccount.address]);
   console.log("- User address:", userAccount.address);
   console.log("- User has access?:", hasAccess);
@@ -625,7 +651,7 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // Showing the contract balance after purchase
-  console.group("Contract Balance");
+  console.group("◇ Contract Balance");
   const balance = await token.read.balanceOf([contract.address]);
   console.log(
     "- Contract balance after purchase:",
@@ -636,15 +662,17 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // Admin Check out
-  console.group("Admin Check Out");
+  console.group("◇ Admin Check Out");
   const checkOutHash = await contract.write.checkOut({
     account: adminAccount,
   });
 
   console.log("- Admin check out initiated:", checkOutHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptCheckout = await publicClient.waitForTransactionReceipt({
     hash: checkOutHash,
   });
+
+  calculateTxFee(receiptCheckout);
 
   console.log("- Admin check out completed successfully");
   console.groupEnd();
@@ -652,7 +680,7 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // Check balance after check out
-  console.group("Contract Balance After Check Out");
+  console.group("◇ Contract Balance After Check Out");
   const balanceAfterCheckOut = await token.read.balanceOf([contract.address]);
   console.log(
     "- Contract balance after check out:",
@@ -673,76 +701,140 @@ async function testBoothRequestSaleERC20() {
   await sleep(sleepSeconds);
 
   // Withdraw funds by admin
-  console.group("Admin Withdraw Funds");
+  console.group("◇ Admin Withdraw Funds");
   const withdrawHash = await contract.write.withdraw({
     account: adminAccount,
   });
   console.log("- Admin withdraw initiated:", withdrawHash);
-  await publicClient.waitForTransactionReceipt({
+  const receiptWithdraw = await publicClient.waitForTransactionReceipt({
     hash: withdrawHash,
   });
+
+  calculateTxFee(receiptWithdraw);
   console.log("- Admin withdraw completed successfully");
   console.groupEnd();
 }
 
-async function verifyContract({
-  contractAddress,
+async function deployFactoryContract({
+  deployedContractAddress,
+  templateContractAddress,
 }: {
-  contractAddress: Hex; // Optional, if you want to verify a specific contract
+  deployedContractAddress?: Hex;
+  templateContractAddress: Hex;
 }) {
-  const instance = new Etherscan(
-    ETHERSCAN_API_KEY,
-    "https://api.etherscan.io/api",
-    "https://sepolia.etherscan.io",
-    sepolia.id,
-  );
-
-  const isVerified = await instance.isVerified(contractAddress);
-
-  console.log("- Contract is verified:", isVerified);
-
-  if (isVerified) {
-    console.log("- Contract already verified, skipping verification.");
-    return;
+  if (deployedContractAddress) {
+    console.log("- Deployed HexisFactory:", deployedContractAddress);
+    return await hre.viem.getContractAt(
+      "HexisFactory",
+      deployedContractAddress,
+    );
   }
 
-  console.log("- Verifying contract on Etherscan...");
-  const verificationResult = await instance.verify(
-    contractAddress,
-    JSON.stringify(source),
-    "contracts/HexisFactory.sol:HexisFactory",
-    "v0.8.28+commit.7893614a",
-    "",
-  );
-
-  console.log("- Verification result:", verificationResult);
-}
-
-async function deployFactoryContract() {
   console.log("Running Factory Tests...");
-  const contract = await hre.viem.deployContract("HexisFactory", []);
+  const contract = await hre.viem.deployContract("HexisFactory", [
+    adminAccount.address,
+    templateContractAddress,
+    adminAccount.address,
+  ]);
 
   console.log("- Deployed HexisFactory:", contract.address);
 
   return await hre.viem.getContractAt("HexisFactory", contract.address);
 }
 
+async function deployTemplateContract({
+  deployedContractAddress,
+}: {
+  deployedContractAddress?: Hex;
+}) {
+  if (deployedContractAddress) {
+    console.log("- Deployed HexisBooth:", deployedContractAddress);
+    return await hre.viem.getContractAt("HexisBooth", deployedContractAddress);
+  }
+
+  console.log("Running Template Tests...");
+  const contract = await hre.viem.deployContract("HexisBooth", [
+    adminAccount.address,
+  ]);
+
+  console.log("- Deployed HexisBooth:", contract.address);
+
+  return await hre.viem.getContractAt("HexisBooth", contract.address);
+}
+
 async function main() {
-  //   console.log("Running HexisBooth tests...");
+  console.log(`${"═".repeat(5)} Running Hexis Factory Tests ${"═".repeat(5)}`);
+  const templateContract = await deployTemplateContract({
+    deployedContractAddress: "0xf61BcE30b198B55E50Dd521b98Eaa1e85D835F3E",
+  });
 
-  //   await testBoothInstantSaleNative();
-  //   await testBoothInstantSaleERC20();
-  //   await testBoothRequestSaleNative();
-  //   await testBoothRequestSaleERC20();
+  console.log(`${"═".repeat(5)} Running Hexis Factory Tests ${"═".repeat(5)}`);
+  const factoryContract = await deployFactoryContract({
+    deployedContractAddress: "0x74C3eBDe7e9644AaB5ee6200CE9ED7614f29fE53",
+    templateContractAddress: templateContract.address,
+  });
 
-  //   console.log("HexisBooth tests completed successfully.");
+  console.log(
+    `${"═".repeat(5)} Testing HexisBooth Instant Sale Native ${"═".repeat(5)}`,
+  );
 
-  const contract = await deployFactoryContract();
+  const instantSaleNativeBooth = await deployBooth(factoryContract.address, {
+    ownerAddress: adminAccount.address,
+    previewText: "Test Booth Instant Sale Native",
+    price: parseEther("0.001"),
+    saleType: SaleType.InstantSale,
+    paymentOption: PaymentOption.NativeCurrency,
+  });
 
-  await sleep(20);
+  await testBoothInstantSaleNative({
+    contractAddress: instantSaleNativeBooth.address,
+  });
 
-  await verifyContract({
-    contractAddress: contract.address,
+  console.log(
+    `${"═".repeat(5)} Testing HexisBooth Instant Sale ERC20 ${"═".repeat(5)}`,
+  );
+  const instantSaleERC20Booth = await deployBooth(factoryContract.address, {
+    ownerAddress: adminAccount.address,
+    previewText: "Test Booth Instant Sale ERC20",
+    price: BigInt(100 * 10 ** 18), // 100 Tokens
+    saleType: SaleType.InstantSale,
+    paymentOption: PaymentOption.ERC20Token,
+    paymentTokenAddress: "0x45081e24fE95dEa81a56d80487825524c8ad6c69", // Deployed Test Token Address
+  });
+
+  await testBoothInstantSaleERC20({
+    contractAddress: instantSaleERC20Booth.address,
+  });
+
+  console.log(
+    `${"═".repeat(5)} Testing HexisBooth Request Sale Native ${"═".repeat(5)}`,
+  );
+  const requestSaleNativeBooth = await deployBooth(factoryContract.address, {
+    ownerAddress: adminAccount.address,
+    previewText: "Test Booth Request Sale Native",
+    price: parseEther("0.0001"),
+    saleType: SaleType.RequestSale,
+    paymentOption: PaymentOption.NativeCurrency,
+  });
+
+  await testBoothRequestSaleNative({
+    contractAddress: requestSaleNativeBooth.address,
+  });
+
+  console.log(
+    `${"═".repeat(5)} Testing HexisBooth Request Sale ERC20 ${"═".repeat(5)}`,
+  );
+  const requestSaleERC20Booth = await deployBooth(factoryContract.address, {
+    ownerAddress: adminAccount.address,
+    previewText: "Test Booth Request Sale ERC20",
+    price: BigInt(100 * 10 ** 18), // 100 Tokens
+    saleType: SaleType.RequestSale,
+    paymentOption: PaymentOption.ERC20Token,
+    paymentTokenAddress: "0x45081e24fE95dEa81a56d80487825524c8ad6c69", // Deployed Test Token Address
+  });
+
+  await testBoothRequestSaleERC20({
+    contractAddress: requestSaleERC20Booth.address,
   });
 }
 

@@ -1,173 +1,78 @@
 import hre from "hardhat";
-import { Hex, zeroAddress } from "viem";
+import { Hex, parseAbi, parseAbiItem, parseEventLogs, zeroAddress } from "viem";
 import { PaymentOption, SaleType } from "../lib/shared";
+import { publicClient } from "../lib/client";
+import { calculateTxFee } from "../lib/util";
 
-export function getInstantSaleNativeArgs({
-  ownerAddress,
-  previewText,
-  price,
-}: {
+export type BaseBoothConfig = {
   ownerAddress: Hex;
   previewText: string;
   price: bigint;
-}) {
+  saleType: SaleType;
+};
+
+export type PaymentConfig =
+  | {
+      paymentOption: PaymentOption.NativeCurrency;
+    }
+  | {
+      paymentOption: PaymentOption.ERC20Token;
+      paymentTokenAddress: Hex;
+    };
+
+export type BoothConfig = BaseBoothConfig & PaymentConfig;
+
+function getBoothArgs(
+  config: BoothConfig,
+): [`0x${string}`, string, bigint, number, `0x${string}`, number] {
+  const { ownerAddress, previewText, price, saleType, paymentOption } = config;
+
+  const paymentTokenAddress =
+    config.paymentOption === PaymentOption.ERC20Token
+      ? config.paymentTokenAddress
+      : zeroAddress;
+
   return [
     ownerAddress,
     previewText,
     price,
-    PaymentOption.NativeCurrency,
-    zeroAddress,
-    SaleType.InstantSale,
+    paymentOption,
+    paymentTokenAddress,
+    saleType,
   ];
 }
 
-export async function deployBoothInstantSaleNative({
-  ownerAddress,
-  previewText,
-  price,
-}: {
-  ownerAddress: Hex;
-  previewText: string;
-  price: bigint;
-}) {
-  const args = getInstantSaleNativeArgs({
-    ownerAddress,
-    previewText,
-    price,
+export async function deployBooth(
+  factoryContractAddress: Hex,
+  config: BoothConfig,
+) {
+  const factory = await hre.viem.getContractAt(
+    "HexisFactory",
+    factoryContractAddress,
+  );
+
+  const args = getBoothArgs(config);
+
+  const hash = await factory.write.createHexisBooth(args);
+
+  const receipt = await publicClient.waitForTransactionReceipt({
+    hash,
   });
 
-  // @ts-ignore
-  const { address } = await hre.viem.deployContract("HexisBooth", args);
+  calculateTxFee(receipt);
 
-  return await hre.viem.getContractAt("HexisBooth", address);
-}
-
-export function getInstantSaleERC20Args({
-  ownerAddress,
-  previewText,
-  price,
-  paymentTokenAddress,
-}: {
-  ownerAddress: Hex;
-  previewText: string;
-  price: bigint;
-  paymentTokenAddress: Hex;
-}) {
-  return [
-    ownerAddress,
-    previewText,
-    price,
-    PaymentOption.ERC20Token,
-    paymentTokenAddress,
-    SaleType.InstantSale,
-  ];
-}
-
-export async function deployBoothInstantSaleERC20({
-  ownerAddress,
-  previewText,
-  price,
-  paymentTokenAddress,
-}: {
-  ownerAddress: Hex;
-  previewText: string;
-  price: bigint;
-  paymentTokenAddress: Hex;
-}) {
-  const args = getInstantSaleERC20Args({
-    ownerAddress,
-    previewText,
-    price,
-    paymentTokenAddress,
+  const logs = parseEventLogs({
+    abi: parseAbi([
+      "event BoothCreated(address indexed boothAddress, address indexed owner)",
+    ]),
+    logs: receipt.logs,
   });
 
-  // @ts-ignore
-  const { address } = await hre.viem.deployContract("HexisBooth", args);
+  const boothAddress = logs[0].args.boothAddress;
 
-  return await hre.viem.getContractAt("HexisBooth", address);
-}
+  if (!boothAddress) {
+    throw new Error("Booth creation failed, no address found in logs.");
+  }
 
-export function getRequestSaleNativeArgs({
-  ownerAddress,
-  previewText,
-  price,
-}: {
-  ownerAddress: Hex;
-  previewText: string;
-  price: bigint;
-}) {
-  return [
-    ownerAddress,
-    previewText,
-    price,
-    PaymentOption.NativeCurrency,
-    zeroAddress,
-    SaleType.RequestSale,
-  ];
-}
-
-export async function deployBoothRequestSaleNative({
-  ownerAddress,
-  previewText,
-  price,
-}: {
-  ownerAddress: Hex;
-  previewText: string;
-  price: bigint;
-}) {
-  const args = getRequestSaleNativeArgs({
-    ownerAddress,
-    previewText,
-    price,
-  });
-
-  // @ts-ignore
-  const { address } = await hre.viem.deployContract("HexisBooth", args);
-
-  return await hre.viem.getContractAt("HexisBooth", address);
-}
-
-export function getRequestSaleERC20Args({
-  ownerAddress,
-  previewText,
-  price,
-  paymentTokenAddress,
-}: {
-  ownerAddress: Hex;
-  previewText: string;
-  price: bigint;
-  paymentTokenAddress: Hex;
-}) {
-  return [
-    ownerAddress,
-    previewText,
-    price,
-    PaymentOption.ERC20Token,
-    paymentTokenAddress,
-    SaleType.RequestSale,
-  ];
-}
-
-export async function deployBoothRequestSaleERC20({
-  ownerAddress,
-  previewText,
-  price,
-  paymentTokenAddress,
-}: {
-  ownerAddress: Hex;
-  previewText: string;
-  price: bigint;
-  paymentTokenAddress: Hex;
-}) {
-  const args = getRequestSaleERC20Args({
-    ownerAddress,
-    previewText,
-    price,
-    paymentTokenAddress,
-  });
-
-  // @ts-ignore
-  const { address } = await hre.viem.deployContract("HexisBooth", args);
-
-  return await hre.viem.getContractAt("HexisBooth", address);
+  return hre.viem.getContractAt("HexisBooth", boothAddress);
 }

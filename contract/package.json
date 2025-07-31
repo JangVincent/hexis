@@ -2,7 +2,7 @@
   "name": "@hexis/contract",
   "scripts": {
     "compile": "hardhat compile",
-    "ignition": "hardhat ignition deploy ignition/modules/HexisFactory.ts --network mainnet --verify",
+    "ignition": "hardhat ignition deploy ignition/modules/HexisFactory.ts --network sepolia --verify",
     "ignition:booth": "hardhat ignition deploy ignition/modules/HexisBooth.ts --network sepolia --verify",
     "ignition:test-token": "hardhat ignition deploy ignition/modules/TestToken.ts --network sepolia --verify",
     "script": "hardhat run scripts/index.ts --network sepolia"
