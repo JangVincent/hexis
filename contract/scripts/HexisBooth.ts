@@ -1,5 +1,5 @@
 import hre from "hardhat";
-import { Hex, parseAbi, parseAbiItem, parseEventLogs, zeroAddress } from "viem";
+import { Hex, parseAbi, parseEventLogs, zeroAddress } from "viem";
 import { PaymentOption, SaleType } from "../lib/shared";
 import { publicClient } from "../lib/client";
 import { calculateTxFee } from "../lib/util";

@@ -5,6 +5,31 @@ import "solady/src/utils/LibClone.sol";
 import "solady/src/auth/Ownable.sol";
 import "./HexisBooth.sol";
 
+/**
+
+++++   ++++  ++++++++  +++++  +++++  +++++   +++++++
+++++   ++++  ++++++++  +++++  +++++  +++++  ++++++++
+++++   ++++  ++++++++   ++++++++++   +++++ +++++++++
+++++   ++++  ++++       ++++++++++   +++++ +++++ +++
+++++   ++++  ++++        ++++++++    +++++ +++++    
++++++++++++  ++++++++    +++++++     +++++ +++++++  
++++++++++++  ++++++++     ++++++     +++++  +++++++ 
++++++++++++  ++++++++     ++++++     +++++   +++++++
++++++++++++  +++++++     +++++++     +++++    ++++++
+++++   ++++  ++++        ++++++++    +++++      ++++
+++++   ++++  ++++++++   ++++++++++   +++++ +++ +++++
+++++   ++++  ++++++++  ++++++ ++++   +++++ +++++++++
+++++   ++++  ++++++++  +++++  +++++  +++++ +++++++++
+++++   ++++  ++++++++  +++++   +++++ +++++ +++++++  
+
+ * 
+ * @title HexisFactory (Testnet)
+ * @author aiiiden (𝕏 : @aiiiden0)
+ * @notice A factory contract for creating HexisBooth instances.
+ * @dev This contract allows the deployment of new HexisBooth contracts with specified parameters.
+ */
+
+
 contract HexisFactory is Ownable {
     event BoothCreated(address indexed boothAddress, address indexed owner);
 

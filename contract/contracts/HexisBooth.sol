@@ -6,6 +6,31 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "solady/src/utils/SafeTransferLib.sol";
 
 
+
+/**
+
+++++   ++++  ++++++++  +++++  +++++  +++++   +++++++
+++++   ++++  ++++++++  +++++  +++++  +++++  ++++++++
+++++   ++++  ++++++++   ++++++++++   +++++ +++++++++
+++++   ++++  ++++       ++++++++++   +++++ +++++ +++
+++++   ++++  ++++        ++++++++    +++++ +++++    
++++++++++++  ++++++++    +++++++     +++++ +++++++  
++++++++++++  ++++++++     ++++++     +++++  +++++++ 
++++++++++++  ++++++++     ++++++     +++++   +++++++
++++++++++++  +++++++     +++++++     +++++    ++++++
+++++   ++++  ++++        ++++++++    +++++      ++++
+++++   ++++  ++++++++   ++++++++++   +++++ +++ +++++
+++++   ++++  ++++++++  ++++++ ++++   +++++ +++++++++
+++++   ++++  ++++++++  +++++  +++++  +++++ +++++++++
+++++   ++++  ++++++++  +++++   +++++ +++++ +++++++  
+
+ * 
+ * @title HexisBooth (Testnet)
+ * @author aiiiden (𝕏 : @aiiiden0)
+ * @notice A contract for managing content sales with both instant and request-based purchase options.
+ * @dev This is a template contract that can be cloned by the HexisFactory.
+ */
+
 contract HexisBooth is Ownable {
     address public FEE_RECEIVER;
     enum SaleType { InstantSale, RequestSale }
@@ -158,7 +183,6 @@ contract HexisBooth is Ownable {
         withdrawableBalance[owner()] = 0;
 
         if (currentPaymentOption == PaymentOption.NativeCurrency) {
-            // Changed: Using forceSafeTransferETH for DoS protection
             SafeTransferLib.forceSafeTransferETH(owner(), amount);
         } else {
             SafeTransferLib.safeTransfer(paymentTokenAddress, owner(), amount);
