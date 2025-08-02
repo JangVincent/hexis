@@ -37,19 +37,19 @@ contract/
 ### Prerequisites
 
 - Node.js 18+
-- pnpm 10.7.0+
+- bun 1.0.0+
 
 ### Installation & Development
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Run tests
-pnpm test
+bun test
 
 # Deploy contracts
-pnpm deploy
+bun deploy
 ```
 
 ## 📋 Development Status

@@ -40,19 +40,19 @@ frontend/
 ### Prerequisites
 
 - Node.js 18+
-- pnpm 10.7.0+
+- bun 1.0.0+
 
 ### Installation & Development
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Start development server
-pnpm dev
+bun dev
 
 # Build for production
-pnpm build
+bun build
 ```
 
 ## 📋 Development Status

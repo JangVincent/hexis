@@ -23,7 +23,7 @@ hexis.cat/
 │   ├── frontend/          # React + TypeScript frontend
 │   └── contract/          # Solidity smart contracts
 ├── biome.json            # Code formatter configuration
-└── pnpm-workspace.yaml   # Monorepo configuration
+└── bun.lockb   # Monorepo configuration
 ```
 
 ### Tech Stack
@@ -46,7 +46,7 @@ hexis.cat/
 ### Prerequisites
 
 - Node.js 18+
-- pnpm 10.7.0+
+- bun 1.0.0+
 
 ### Always sign your commits
 
