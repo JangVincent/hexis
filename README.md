@@ -45,47 +45,6 @@ hexis.cat/
 - Node.js 18+
 - pnpm 10.7.0+
 
-### Installation & Development
+### Always sign your commits
 
-```bash
-# Install dependencies
-pnpm install
-
-# Start frontend development server
-pnpm frontend dev
-
-# Smart contract development
-pnpm contract
-```
-
-## 📋 Development Status
-
-The project is currently in initial setup phase:
-- ✅ Project structure configured
-- ✅ Basic development environment setup
-- ✅ Code quality tools configured (Biome, ESLint)
-- 🔄 Core features development in progress
-
-## 🎨 Core Features (Planned)
-
-- [ ] End-to-end encrypted message system
-- [ ] Public preview functionality
-- [ ] Wallet-based access control
-- [ ] Payment system (1% fee)
-- [ ] Short link generation and sharing
-- [ ] On-chain storage
-
-## 🔐 Security & Privacy
-
-- All messages encrypted client-side
-- Fully on-chain storage (no IPFS)
-- No centralized storage
-- Even Hexis cannot read your messages
-
-## 📄 License
-
-ISC License
-
----
-
-**🜍 hexis.cat** — Publish what matters, hide what must. 
+Check out [this guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits) to sign your commits.
