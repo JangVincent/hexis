@@ -1,6 +1,5 @@
 <img src="https://github.com/user-attachments/assets/f455f138-2c5a-42d3-874c-ecfaa0d3bd37" alt="HEXIS" width="64px" height="64px" />
 
-
 # Hexis
 
 > **YOUR TEXT, YOUR TERMS, NO GODS**
@@ -10,6 +9,7 @@ Hexis is a simple decentralized tool for direct text sales. You sell your texts 
 ## 🎯 Service Overview
 
 With Hexis, you can:
+
 - **Post encrypted messages** publicly
 - **Attach public previews** that appear as ordinary posts to the general public
 - **Restrict access** to specific wallet addresses or paying users
@@ -29,12 +29,14 @@ hexis.cat/
 ### Tech Stack
 
 **Frontend**
+
 - React 19 + TypeScript
 - TanStack Router
 - Tailwind CSS v4
 - Vite
 
 **Smart Contracts**
+
 - Solidity ^0.8.28
 - Hardhat
 - Viem
@@ -42,6 +44,7 @@ hexis.cat/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm 10.7.0+
 

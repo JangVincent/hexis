@@ -7,6 +7,7 @@ The smart contracts for Hexis.cat, providing secure and decentralized storage fo
 ## 🎯 Service Overview
 
 The smart contracts provide:
+
 - **On-chain storage** for encrypted messages
 - **Access control** through wallet addresses
 - **Payment processing** for paid content
@@ -26,6 +27,7 @@ contract/
 ### Tech Stack
 
 **Smart Contracts**
+
 - Solidity ^0.8.28
 - Hardhat
 - Viem
@@ -33,6 +35,7 @@ contract/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm 10.7.0+
 
@@ -52,6 +55,7 @@ pnpm deploy
 ## 📋 Development Status
 
 The smart contracts are currently in development:
+
 - ✅ Basic contract structure
 - ✅ Development environment setup
 - ✅ Test framework configuration
