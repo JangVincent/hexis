@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "frontend": "bun run --filter @hexis/frontend",
-    "backend": "bun run --filter @hexis/backend dev",
+    "backend": "bun run --filter @hexis/backend",
     "dev": "bun run -r dev",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
