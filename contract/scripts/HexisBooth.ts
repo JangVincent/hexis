@@ -1,8 +1,8 @@
-import hre from "hardhat";
-import { Hex, parseAbi, parseEventLogs, zeroAddress } from "viem";
-import { PaymentOption, SaleType } from "../lib/shared";
-import { publicClient } from "../lib/client";
-import { calculateTxFee } from "../lib/util";
+import hre from 'hardhat';
+import { Hex, parseAbi, parseEventLogs, zeroAddress } from 'viem';
+import { PaymentOption, SaleType } from '../lib/shared';
+import { publicClient } from '../lib/client';
+import { calculateTxFee } from '../lib/util';
 
 export type BaseBoothConfig = {
   ownerAddress: Hex;
@@ -23,7 +23,7 @@ export type PaymentConfig =
 export type BoothConfig = BaseBoothConfig & PaymentConfig;
 
 function getBoothArgs(
-  config: BoothConfig,
+  config: BoothConfig
 ): [`0x${string}`, string, bigint, number, `0x${string}`, number] {
   const { ownerAddress, previewText, price, saleType, paymentOption } = config;
 
@@ -44,11 +44,11 @@ function getBoothArgs(
 
 export async function deployBooth(
   factoryContractAddress: Hex,
-  config: BoothConfig,
+  config: BoothConfig
 ) {
   const factory = await hre.viem.getContractAt(
-    "HexisFactory",
-    factoryContractAddress,
+    'HexisFactory',
+    factoryContractAddress
   );
 
   const args = getBoothArgs(config);
@@ -63,7 +63,7 @@ export async function deployBooth(
 
   const logs = parseEventLogs({
     abi: parseAbi([
-      "event BoothCreated(address indexed boothAddress, address indexed owner)",
+      'event BoothCreated(address indexed boothAddress, address indexed owner)',
     ]),
     logs: receipt.logs,
   });
@@ -71,8 +71,8 @@ export async function deployBooth(
   const boothAddress = logs[0].args.boothAddress;
 
   if (!boothAddress) {
-    throw new Error("Booth creation failed, no address found in logs.");
+    throw new Error('Booth creation failed, no address found in logs.');
   }
 
-  return hre.viem.getContractAt("HexisBooth", boothAddress);
+  return hre.viem.getContractAt('HexisBooth', boothAddress);
 }

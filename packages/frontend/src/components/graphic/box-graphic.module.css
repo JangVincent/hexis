@@ -1,5 +1,0 @@
-.canvas {
-  min-width: calc(158px * var(--scale, 1));
-  min-height: calc(152px * var(--scale, 1));
-  aspect-ratio: 158 / 152;
-}
