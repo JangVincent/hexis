@@ -17,7 +17,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "bun@1.0.0",
+  "packageManager": "bun@1.1.13",
   "dependencies": {
     "viem": "^2.33.0"
   },
