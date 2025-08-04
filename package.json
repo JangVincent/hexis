@@ -3,16 +3,15 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "frontend": "bun run --filter @hexis/frontend",
-    "backend": "bun run --filter @hexis/backend",
-    "dev": "bun run -r dev",
+    "frontend": "bun run --cwd packages/frontend dev",
+    "backend": "bun run --cwd packages/backend dev",
+    "contract": "bun run compile --cwd packages/contract",
+    "dev:all": "concurrently \"bun run --cwd packages/backend dev\" \"bun run --cwd packages/frontend dev\"",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "workspaces": [
-    "backend",
-    "frontend",
-    "contract"
+    "packages/*"
   ],
   "keywords": [],
   "author": "",
@@ -22,6 +21,7 @@
     "viem": "^2.33.0"
   },
   "devDependencies": {
-    "prettier": "^3.4.0"
+    "prettier": "^3.4.0",
+    "concurrently": "^8.2.2"
   }
 }
