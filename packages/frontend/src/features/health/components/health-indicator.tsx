@@ -1,7 +1,7 @@
 import { ClientError, NetworkError, ServerError } from '@/lib/error';
 import { cn } from '@/lib/tailwind-utils';
 import { useServerHealth } from '@/requests/server-health';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 enum ServerStatus {
   OK = 'OK',
@@ -9,8 +9,9 @@ enum ServerStatus {
   LOADING = 'LOADING',
 }
 
-export default function HealthIndicator() {
+function HealthIndicator() {
   const { data, status, error } = useServerHealth();
+  console.log(data, status, error);
 
   const serverStatus = useMemo(() => {
     if (status === 'pending') return ServerStatus.LOADING;
@@ -56,3 +57,5 @@ export default function HealthIndicator() {
     </p>
   );
 }
+
+export default React.memo(HealthIndicator);
