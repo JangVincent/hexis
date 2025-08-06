@@ -1,0 +1,49 @@
+import * as jwt from 'jsonwebtoken';
+
+type Unit =
+  | 'Years'
+  | 'Year'
+  | 'Yrs'
+  | 'Yr'
+  | 'Y'
+  | 'Weeks'
+  | 'Week'
+  | 'W'
+  | 'Days'
+  | 'Day'
+  | 'D'
+  | 'Hours'
+  | 'Hour'
+  | 'Hrs'
+  | 'Hr'
+  | 'H'
+  | 'Minutes'
+  | 'Minute'
+  | 'Mins'
+  | 'Min'
+  | 'M'
+  | 'Seconds'
+  | 'Second'
+  | 'Secs'
+  | 'Sec'
+  | 's'
+  | 'Milliseconds'
+  | 'Millisecond'
+  | 'Msecs'
+  | 'Msec'
+  | 'Ms';
+
+type UnitAnyCase = Unit | Uppercase<Unit> | Lowercase<Unit>;
+
+export type JwtPeriodStringValue =
+  | `${number}`
+  | `${number}${UnitAnyCase}`
+  | `${number} ${UnitAnyCase}`;
+
+export const generateAccessToken = (
+  address: string,
+  secret: string,
+  expiresIn: JwtPeriodStringValue
+): string => {
+  return jwt.sign({ address }, secret, { expiresIn: expiresIn });
+};
