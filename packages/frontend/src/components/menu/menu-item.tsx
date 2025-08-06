@@ -15,7 +15,6 @@ export default function MenuItem({
   const matchRoute = useMatchRoute();
 
   const active = matchRoute({
-    from: to,
     to,
   });
 
