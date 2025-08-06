@@ -11,7 +11,6 @@ enum ServerStatus {
 
 function HealthIndicator() {
   const { data, status, error } = useServerHealth();
-  console.log(data, status, error);
 
   const serverStatus = useMemo(() => {
     if (status === 'pending') return ServerStatus.LOADING;
