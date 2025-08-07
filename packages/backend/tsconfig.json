@@ -1,8 +1,16 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "types": ["bun-types"]
+    "module": "ESNext",
+    "target": "ES2022",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "types": ["bun-types"],
+    "paths": {
+      "@modules/*": ["./src/modules/*"],
+      "@commons/*": ["./src/commons/*"],
+      "@db/*": ["./db/*"]
+    }
   }
 }

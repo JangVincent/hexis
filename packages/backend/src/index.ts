@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { Hono } from 'hono';
+import { AuthRouter } from './modules/auth/auth.router';
 
 const app = new Hono();
 
@@ -7,7 +8,9 @@ app.get('/', c => {
   return c.text('Hello Hono!');
 });
 
+app.route('/auth', AuthRouter);
+
 export default {
-  port: 8080,
+  port: process.env.PORT || 8080,
   fetch: app.fetch,
 };
