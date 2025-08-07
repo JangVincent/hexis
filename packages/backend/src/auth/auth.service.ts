@@ -10,7 +10,8 @@ import {
   JwtPeriodStringValue,
   generateAccessToken,
 } from '../lib/utils/generateAccessToken';
-import { LoginDTO, LoginResponse } from './types';
+import { LoginDTO } from './dtos-req';
+import { LoginResponse } from './dtos-res';
 
 export const AuthService = {
   async generateNonce(walletAddress: string): Promise<{ nonce: string }> {

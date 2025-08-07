@@ -2,6 +2,7 @@ import { HttpStatusCode } from 'axios';
 import { Context, Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { AuthService } from './auth.service';
+import { LoginDtoValidationScheme } from './dtos-req';
 
 export const AuthRouter = new Hono().basePath('');
 
@@ -20,25 +21,22 @@ AuthRouter.get('/nonce', async (c: Context) => {
 
 // Login End-point
 AuthRouter.post('/login', async (c: Context) => {
-  const body = await c.req.json();
-  const { nonce, signature, address } = body;
+  const raw = await c.req.json();
+  const parseResult = LoginDtoValidationScheme.safeParse(raw);
 
-  // TODO : zod
-  if (!nonce || !signature || !address) {
-    return c.json(
-      {
-        success: false,
-        error: 'Missing required fields: nonce, signature, address',
-      },
-      400
-    );
+  if (!parseResult.success) {
+    throw new HTTPException(HttpStatusCode.BadRequest, {
+      message: 'Invalid request body',
+    });
   }
 
-  const result = await AuthService.login({
+  const { nonce, signature, address } = parseResult.data;
+
+  const response = await AuthService.login({
     nonce,
     signature,
     address: address.toLowerCase(),
   });
 
-  return c.json(result);
+  return c.json(response);
 });

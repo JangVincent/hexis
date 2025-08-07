@@ -1,11 +1,7 @@
-import { sql } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users', {
-  id: uuid('id')
-    .default(sql`gen_random_uuid()`)
-    .primaryKey()
-    .notNull(),
+  id: uuid('id').default(crypto.randomUUID()).primaryKey().notNull(),
   walletAddress: varchar({ length: 255 }).notNull().unique(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
