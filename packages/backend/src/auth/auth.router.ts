@@ -1,13 +1,14 @@
+import { validationMiddleware } from '@/commons/validate.middleware';
 import { HttpStatusCode } from 'axios';
-import { Context, Hono } from 'hono';
+import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { AuthService } from './auth.service';
-import { LoginDtoValidationScheme } from './dtos-req';
+import { LoginDTO, LoginDtoValidationScheme } from './dtos-req';
 
 export const AuthRouter = new Hono().basePath('');
 
 // Nonce Generation End-point
-AuthRouter.get('/nonce', async (c: Context) => {
+AuthRouter.get('/nonce', async c => {
   const address = c.req.query('address');
   if (!address) {
     throw new HTTPException(HttpStatusCode.BadRequest, {
@@ -20,23 +21,19 @@ AuthRouter.get('/nonce', async (c: Context) => {
 });
 
 // Login End-point
-AuthRouter.post('/login', async (c: Context) => {
-  const raw = await c.req.json();
-  const parseResult = LoginDtoValidationScheme.safeParse(raw);
+AuthRouter.post(
+  '/login',
+  validationMiddleware(LoginDtoValidationScheme, 'json'),
+  async c => {
+    const data = c.req.valid('json');
+    const { nonce, signature, address } = data as LoginDTO;
 
-  if (!parseResult.success) {
-    throw new HTTPException(HttpStatusCode.BadRequest, {
-      message: 'Invalid request body',
+    const response = await AuthService.login({
+      nonce,
+      signature,
+      address: address.toLowerCase(),
     });
+
+    return c.json(response);
   }
-
-  const { nonce, signature, address } = parseResult.data;
-
-  const response = await AuthService.login({
-    nonce,
-    signature,
-    address: address.toLowerCase(),
-  });
-
-  return c.json(response);
-});
+);
