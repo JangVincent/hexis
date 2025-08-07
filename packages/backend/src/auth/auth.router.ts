@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 
 export const AuthRouter = new Hono().basePath('');
 
-// Nonce 생성 엔드포인트
+// Nonce Generation End-point
 AuthRouter.get('/nonce', async (c: Context) => {
   const address = c.req.query('address');
   if (!address) {
@@ -18,12 +18,12 @@ AuthRouter.get('/nonce', async (c: Context) => {
   return c.json(nonce);
 });
 
-// 로그인 및 시그니처 검증 엔드포인트
+// Login End-point
 AuthRouter.post('/login', async (c: Context) => {
   const body = await c.req.json();
   const { nonce, signature, address } = body;
 
-  // 필수 필드 검증
+  // TODO : zod
   if (!nonce || !signature || !address) {
     return c.json(
       {
@@ -34,7 +34,6 @@ AuthRouter.post('/login', async (c: Context) => {
     );
   }
 
-  // 시그니처 검증 및 로그인 처리
   const result = await AuthService.login({
     nonce,
     signature,

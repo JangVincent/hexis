@@ -27,9 +27,6 @@ export const AuthService = {
     };
   },
 
-  /**
-   * 로그인 처리 및 시그니처 검증
-   */
   async login(loginDto: LoginDTO): Promise<LoginResponse> {
     const { nonce, signature, address } = loginDto;
 
@@ -39,7 +36,7 @@ export const AuthService = {
         .from(noncesTable)
         .where(eq(noncesTable.nonce, nonce));
 
-      if (!existingNonce) {
+      if (existingNonce.length === 0) {
         throw new HTTPException(HttpStatusCode.BadRequest, {
           message: 'Nonce not found. Please try again.',
         });
@@ -75,7 +72,7 @@ export const AuthService = {
         .from(usersTable)
         .where(eq(usersTable.walletAddress, address));
 
-      if (!user) {
+      if (user.length === 0) {
         await db.insert(usersTable).values({
           walletAddress: address,
         });
@@ -90,8 +87,8 @@ export const AuthService = {
         user: user[0] as Partial<User>,
         token: generateAccessToken(
           address,
-          process.env.ACCESS_TOKEN_SECRET!,
-          process.env.ACCESS_TOKEN_EXPIRES_IN! as JwtPeriodStringValue
+          process.env.ACCESS_TOKEN_SECRET,
+          process.env.ACCESS_TOKEN_EXPIRES_IN as JwtPeriodStringValue
         ),
       };
     } catch (err) {
