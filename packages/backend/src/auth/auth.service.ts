@@ -10,7 +10,7 @@ import {
   JwtPeriodStringValue,
   generateAccessToken,
 } from '../lib/utils/generateAccessToken';
-import { LoginDTO } from './dtos-req';
+import { PostLoginDTO } from './dtos-req';
 import { LoginResponse } from './dtos-res';
 
 export const AuthService = {
@@ -28,7 +28,7 @@ export const AuthService = {
     };
   },
 
-  async login(loginDto: LoginDTO): Promise<LoginResponse> {
+  async login(loginDto: PostLoginDTO): Promise<LoginResponse> {
     const { nonce, signature, address } = loginDto;
 
     try {

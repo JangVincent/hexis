@@ -1,24 +1,27 @@
-import { validationMiddleware } from '@/commons/validate.middleware';
-import { HttpStatusCode } from 'axios';
+import { validationMiddleware } from '@/commons/middlewares/validate.middleware';
 import { Hono } from 'hono';
-import { HTTPException } from 'hono/http-exception';
 import { AuthService } from './auth.service';
-import { LoginDTO, LoginDtoValidationScheme } from './dtos-req';
+import {
+  GetNonceDTO,
+  LoginDtoValidationScheme,
+  NonceDtoValidationScheme,
+  PostLoginDTO,
+} from './dtos-req';
 
-export const AuthRouter = new Hono().basePath('');
+export const AuthRouter = new Hono();
 
 // Nonce Generation End-point
-AuthRouter.get('/nonce', async c => {
-  const address = c.req.query('address');
-  if (!address) {
-    throw new HTTPException(HttpStatusCode.BadRequest, {
-      message: 'Missing required fields: address',
-    });
-  }
+AuthRouter.get(
+  '/nonce',
+  validationMiddleware(NonceDtoValidationScheme, 'query'),
+  async c => {
+    const data = c.req.valid('query');
+    const { address } = data as GetNonceDTO;
 
-  const nonce = await AuthService.generateNonce(address.toLowerCase());
-  return c.json(nonce);
-});
+    const nonce = await AuthService.generateNonce(address.toLowerCase());
+    return c.json(nonce);
+  }
+);
 
 // Login End-point
 AuthRouter.post(
@@ -26,7 +29,7 @@ AuthRouter.post(
   validationMiddleware(LoginDtoValidationScheme, 'json'),
   async c => {
     const data = c.req.valid('json');
-    const { nonce, signature, address } = data as LoginDTO;
+    const { nonce, signature, address } = data as PostLoginDTO;
 
     const response = await AuthService.login({
       nonce,
