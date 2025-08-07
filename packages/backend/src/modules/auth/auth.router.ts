@@ -1,4 +1,4 @@
-import { validationMiddleware } from '@/commons/middlewares/validate.middleware';
+import { validationMiddleware } from '@commons/middlewares/validate.middleware';
 import { Hono } from 'hono';
 import { AuthService } from './auth.service';
 import {

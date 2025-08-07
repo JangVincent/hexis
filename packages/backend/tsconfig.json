@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "types": ["bun-types"],
     "paths": {
-      "@/*": ["./src/*"],
-      "@lib/*": ["./src/lib/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@commons/*": ["./src/commons/*"],
       "@db/*": ["./db/*"]
     }
   }

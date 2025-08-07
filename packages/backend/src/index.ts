@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Hono } from 'hono';
-import { AuthRouter } from './auth/auth.router';
+import { AuthRouter } from './modules/auth/auth.router';
 
 const app = new Hono();
 

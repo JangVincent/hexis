@@ -1,4 +1,4 @@
-import { EthereumAddressValidator } from '@/commons/vaildators/ethereumAddress.validator';
+import { EthereumAddressValidator } from '@commons/vaildators/ethereumAddress.validator';
 import z from 'zod';
 
 export const NonceDtoValidationScheme = z.object({
