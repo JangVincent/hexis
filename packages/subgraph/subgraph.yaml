@@ -8,9 +8,9 @@ dataSources:
     name: HexisFactory
     network: sepolia
     source:
-      address: '0xBbAff867d6fF647028f67f2c4C60479bF6F5be39'
+      address: '0xa212530701b58d110bf3A308f2dA2Fa3cc500A1c'
       abi: HexisFactory
-      startBlock: 8883106
+      startBlock: 8975692
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -24,7 +24,7 @@ dataSources:
         - name: HexisFactory
           file: ./abis/HexisFactory.json
       eventHandlers:
-        - event: BoothCreated(indexed address,indexed address)
+        - event: BoothCreated(indexed address,indexed address,string,uint256,uint8,address,uint8)
           handler: handleBoothCreated
         - event: OwnershipHandoverCanceled(indexed address)
           handler: handleOwnershipHandoverCanceled

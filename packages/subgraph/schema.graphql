@@ -2,6 +2,11 @@ type BoothCreated @entity(immutable: true) {
   id: Bytes!
   boothAddress: Bytes! # address
   owner: Bytes! # address
+  previewText: String! # string
+  price: BigInt! # uint256
+  paymentOption: Int! # uint8
+  paymentTokenAddress: Bytes! # address
+  saleType: Int! # uint8
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

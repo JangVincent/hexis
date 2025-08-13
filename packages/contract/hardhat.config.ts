@@ -19,7 +19,7 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       // url: sepolia.rpcUrls.default.http[0],
-      url: 'https://eth-sepolia.g.alchemy.com/v2/8c06m-WG1GSMR3MUk-yXp9T9dPNFL9tV',
+      url: 'https://eth-sepolia.g.alchemy.com/v2/P-f9nTcdGn1vg_JJwkGt0',
       accounts: [ADMIN_PRIVATE_KEY],
     },
   },

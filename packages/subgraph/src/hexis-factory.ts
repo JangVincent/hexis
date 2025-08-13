@@ -17,6 +17,11 @@ export function handleBoothCreated(event: BoothCreatedEvent): void {
   );
   entity.boothAddress = event.params.boothAddress;
   entity.owner = event.params.owner;
+  entity.previewText = event.params.previewText;
+  entity.price = event.params.price;
+  entity.paymentOption = event.params.paymentOption;
+  entity.paymentTokenAddress = event.params.paymentTokenAddress;
+  entity.saleType = event.params.saleType;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;

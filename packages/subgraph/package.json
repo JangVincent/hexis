@@ -1,13 +1,13 @@
 {
-  "name": "hexissubgraph",
+  "name": "hexis-sepolia",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ hexissubgraph",
-    "create-local": "graph create --node http://localhost:8020/ hexissubgraph",
-    "remove-local": "graph remove --node http://localhost:8020/ hexissubgraph",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 hexissubgraph",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ hexis-sepolia",
+    "create-local": "graph create --node http://localhost:8020/ hexis-sepolia",
+    "remove-local": "graph remove --node http://localhost:8020/ hexis-sepolia",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 hexis-sepolia",
     "test": "graph test"
   },
   "dependencies": {

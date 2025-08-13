@@ -88,7 +88,7 @@
       },
     },
     "packages/subgraph": {
-      "name": "hexissubgraph",
+      "name": "hexis-sepolia",
       "dependencies": {
         "@graphprotocol/graph-cli": "0.97.1",
         "@graphprotocol/graph-ts": "0.37.0",
@@ -1331,7 +1331,7 @@
 
     "heap": ["heap@0.2.7", "", {}, "sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg=="],
 
-    "hexissubgraph": ["hexissubgraph@workspace:packages/subgraph"],
+    "hexis-sepolia": ["hexis-sepolia@workspace:packages/subgraph"],
 
     "hmac-drbg": ["hmac-drbg@1.0.1", "", { "dependencies": { "hash.js": "^1.0.3", "minimalistic-assert": "^1.0.0", "minimalistic-crypto-utils": "^1.0.1" } }, "sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg=="],
 
