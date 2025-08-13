@@ -31,7 +31,9 @@ import "./HexisBooth.sol";
 
 
 contract HexisFactory is Ownable {
-    event BoothCreated(address indexed boothAddress, address indexed owner);
+    event BoothCreated(address indexed boothAddress, address indexed owner,
+        string previewText, uint256 price, HexisBooth.PaymentOption paymentOption,
+        address paymentTokenAddress, HexisBooth.SaleType saleType);
 
     address public immutable hexisBoothImplementation;
     address public feeReceiver;
@@ -70,7 +72,7 @@ contract HexisFactory is Ownable {
             feeReceiver // feeReceiver 주소 전달
         );
 
-        emit BoothCreated(newBoothAddress, ownerAddress);
+        emit BoothCreated(newBoothAddress, ownerAddress, previewText, price, paymentOption, paymentTokenAddress, saleType);
         boothCount++;
         return newBoothAddress;
     }

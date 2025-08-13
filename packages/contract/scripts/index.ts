@@ -9,7 +9,7 @@ import { deployToken, mintTestTokens } from './TestToken';
 import { calculateTxFee, sleep } from '../lib/util';
 import { PaymentOption, SaleType } from '../lib/shared';
 
-const sleepSeconds = 5;
+const sleepSeconds = 10;
 
 const deployedTestTokenAddress: Hex | undefined =
   '0x45081e24fE95dEa81a56d80487825524c8ad6c69';
@@ -105,6 +105,8 @@ async function testBoothInstantSaleNative({
   const checkOutHash = await contract.write.checkOut({
     account: adminAccount,
   });
+
+  sleep(sleepSeconds);
 
   console.log('- Admin check out initiated:', checkOutHash);
 
@@ -761,11 +763,14 @@ async function deployTemplateContract({
 
 async function main() {
   console.log(`${'═'.repeat(5)} Running Hexis Factory Tests ${'═'.repeat(5)}`);
-  const templateContract = await deployTemplateContract({});
+  const templateContract = await deployTemplateContract({
+    deployedContractAddress: '0xC9A94DB15bA35EF41c3CBeaD1AF705943F90f5bf',
+  });
 
   console.log(`${'═'.repeat(5)} Running Hexis Factory Tests ${'═'.repeat(5)}`);
   const factoryContract = await deployFactoryContract({
     templateContractAddress: templateContract.address,
+    deployedContractAddress: '0xBbAff867d6fF647028f67f2c4C60479bF6F5be39',
   });
 
   console.log(
