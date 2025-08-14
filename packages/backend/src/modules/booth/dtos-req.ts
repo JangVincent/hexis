@@ -19,7 +19,7 @@ export type GetBoothPaginationDTO = z.infer<
 >;
 
 export const GetBoothDtoValidationScheme = z.object({
-  boothId: z.string(),
+  boothId: z.uuid(),
 });
 
 export type GetBoothDTO = z.infer<typeof GetBoothDtoValidationScheme>;
@@ -36,7 +36,7 @@ export const CreateBoothDtoValidationScheme = z.object({
 export type CreateBoothDTO = z.infer<typeof CreateBoothDtoValidationScheme>;
 
 export const PatchBoothParamDtoValidationScheme = z.object({
-  boothId: z.string(),
+  boothId: z.uuid(),
 });
 
 export type PatchBoothParamDTO = z.infer<
