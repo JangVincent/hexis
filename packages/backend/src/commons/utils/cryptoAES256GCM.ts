@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import dotenv from 'dotenv';
 
 const IV_LENGTH = 16;
-const SECRET_KEY = Buffer.from(process.env.ENCRYPTION_KEY_HEX, 'hex');
+const SECRET_KEY = Buffer.from(process.env.FULL_TEXT_ENCRYPTION_KEY, 'hex');
 
 /**
  * @description encrypt text using AES-256-GCM
