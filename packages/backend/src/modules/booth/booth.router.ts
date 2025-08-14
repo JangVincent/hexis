@@ -94,7 +94,7 @@ BoothRouter.post(
 
 // Patch Booth End-point
 BoothRouter.patch(
-  '/:boothId',
+  '/:boothId/preview-text',
   jwtMiddleware,
   validationMiddleware(PatchBoothParamDtoValidationScheme, 'param'),
   validationMiddleware(PatchBoothDtoValidationScheme, 'json'),
