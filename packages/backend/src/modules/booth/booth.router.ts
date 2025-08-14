@@ -12,7 +12,7 @@ import {
 
 export const BoothRouter = new Hono();
 
-// Nonce Generation End-point
+// Get Booths End-point
 BoothRouter.get(
   '/',
   validationMiddleware(GetBoothPaginationDtoValidationScheme, 'query'),
@@ -28,6 +28,7 @@ BoothRouter.get(
   }
 );
 
+// Get Booth End-point
 BoothRouter.get(
   '/:boothId',
   validationMiddleware(GetBoothDtoValidationScheme, 'param'),
@@ -39,6 +40,7 @@ BoothRouter.get(
   }
 );
 
+// Create Booth End-point
 BoothRouter.post(
   '/',
   validationMiddleware(CreateBoothDtoValidationScheme, 'json'),

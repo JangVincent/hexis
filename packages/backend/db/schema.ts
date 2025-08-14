@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  serial,
-  text,
-  timestamp,
-  uuid,
-  varchar,
-} from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users', {
   id: uuid('id').default(crypto.randomUUID()).primaryKey().notNull(),
@@ -24,14 +17,6 @@ export type Nonce = typeof noncesTable.$inferSelect;
 export type NewNonce = typeof noncesTable.$inferInsert;
 
 // Booth
-
-export const rotateKeyTable = pgTable('rotate_key', {
-  id: serial('id').primaryKey().notNull(),
-  key: varchar({ length: 256 }).notNull(),
-});
-export type RotateKey = typeof rotateKeyTable.$inferSelect;
-export type NewRotateKey = typeof rotateKeyTable.$inferInsert;
-
 export const boothTable = pgTable('booths', {
   id: uuid('id').default(crypto.randomUUID()).primaryKey().notNull(),
   owner: varchar({ length: 42 }).notNull(), //wallet address

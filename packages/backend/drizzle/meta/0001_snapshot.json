@@ -1,5 +1,5 @@
 {
-  "id": "35185f1f-8a7b-49e0-b4ff-c819e94f0433",
+  "id": "150d2f4e-602a-47a9-aacc-75bf5faf4c3e",
   "prevId": "ffeee974-8bc0-4d13-92c8-af437de42cd2",
   "version": "7",
   "dialect": "postgresql",
@@ -13,7 +13,7 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "default": "'7e621d4f-c8fb-43e7-8f78-29d8f4dcdc90'"
+          "default": "'ee445808-d456-4ab9-b0bd-7f93f7bf8010'"
         },
         "booth_id": {
           "name": "booth_id",
@@ -66,7 +66,7 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "default": "'db7d387f-6adb-4f37-ac11-688fc5516ba6'"
+          "default": "'2fa4b562-afcd-4042-88a4-96af075ae42b'"
         },
         "owner": {
           "name": "owner",
@@ -133,31 +133,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.rotate_key": {
-      "name": "rotate_key",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "key": {
-          "name": "key",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.users": {
       "name": "users",
       "schema": "",
@@ -167,7 +142,7 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "default": "'78907b93-434f-4489-8f8c-503fb64065a2'"
+          "default": "'f827e0cf-cb6b-4c6f-8946-69c5c886108c'"
         },
         "walletAddress": {
           "name": "walletAddress",

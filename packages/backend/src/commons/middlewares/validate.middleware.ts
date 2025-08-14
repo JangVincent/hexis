@@ -3,6 +3,12 @@ import { HttpStatusCode } from 'axios';
 import { HTTPException } from 'hono/http-exception';
 import z from 'zod';
 
+/**
+ * @description validate request body, query, param
+ * @param schema - zod schema
+ * @param target - 'json' | 'form' | 'query' | 'param'
+ * @returns - zod validator middleware for unified validation error handling
+ */
 export const validationMiddleware = (
   schema: z.ZodSchema,
   target: 'json' | 'form' | 'query' | 'param'
