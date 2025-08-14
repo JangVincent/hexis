@@ -8,9 +8,19 @@ import {
   GetBoothDtoValidationScheme,
   GetBoothPaginationDTO,
   GetBoothPaginationDtoValidationScheme,
+  PatchBoothDTO,
+  PatchBoothDtoValidationScheme,
+  PatchBoothParamDTO,
+  PatchBoothParamDtoValidationScheme,
 } from './dtos-req';
 
-export const BoothRouter = new Hono();
+import { JwtPayload } from '@commons/types';
+import { HttpStatusCode } from 'axios';
+import { HTTPException } from 'hono/http-exception';
+import type { JwtVariables } from 'hono/jwt';
+import { jwt } from 'hono/jwt';
+
+export const BoothRouter = new Hono<{ Variables: JwtVariables }>();
 
 // Get Booths End-point
 BoothRouter.get(
@@ -44,10 +54,18 @@ BoothRouter.get(
 BoothRouter.post(
   '/',
   validationMiddleware(CreateBoothDtoValidationScheme, 'json'),
+  jwt({
+    secret: process.env.JWT_SECRET,
+  }),
   async c => {
+    const payload = c.get('jwtPayload') as JwtPayload;
     const { owner, sampleText, blockNumber, fullText } = c.req.valid(
       'json'
     ) as CreateBoothDTO;
+
+    if (payload.address !== owner) {
+      throw new HTTPException(HttpStatusCode.Forbidden);
+    }
 
     const booth = await BoothService.createBooth({
       owner,
@@ -57,5 +75,28 @@ BoothRouter.post(
     });
 
     return c.json(booth);
+  }
+);
+
+// Patch Booth End-point
+BoothRouter.patch(
+  '/:boothId',
+  validationMiddleware(PatchBoothParamDtoValidationScheme, 'param'),
+  validationMiddleware(PatchBoothDtoValidationScheme, 'json'),
+  jwt({
+    secret: process.env.JWT_SECRET,
+  }),
+  async c => {
+    const payload = c.get('jwtPayload') as JwtPayload;
+    const { boothId } = c.req.valid('param') as PatchBoothParamDTO;
+    const { sampleText } = c.req.valid('json') as PatchBoothDTO;
+
+    const updatedBooth = await BoothService.patchBooth({
+      boothId,
+      sampleText,
+      ownerAddress: payload.address,
+    });
+
+    return c.json(updatedBooth);
   }
 );

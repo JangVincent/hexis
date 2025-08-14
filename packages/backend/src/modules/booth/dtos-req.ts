@@ -34,3 +34,17 @@ export const CreateBoothDtoValidationScheme = z.object({
 });
 
 export type CreateBoothDTO = z.infer<typeof CreateBoothDtoValidationScheme>;
+
+export const PatchBoothParamDtoValidationScheme = z.object({
+  boothId: z.string(),
+});
+
+export type PatchBoothParamDTO = z.infer<
+  typeof PatchBoothParamDtoValidationScheme
+>;
+
+export const PatchBoothDtoValidationScheme = z.object({
+  sampleText: z.string(),
+});
+
+export type PatchBoothDTO = z.infer<typeof PatchBoothDtoValidationScheme>;
