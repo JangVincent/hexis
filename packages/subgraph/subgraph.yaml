@@ -33,3 +33,52 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/hexis-factory.ts
+templates:
+  - kind: ethereum/contract
+    name: HexisBooth
+    network: sepolia
+    source:
+      abi: HexisBooth
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/hexis-booth.ts
+      entities:
+        - ContentPurchased
+        - FundsCheckedOut
+        - FundsWithdrawn
+        - OwnershipHandoverCanceled
+        - OwnershipHandoverRequested
+        - OwnershipTransferred
+        - PreviewTextUpdated
+        - PriceUpdated
+        - PurchaseRequested
+        - RequestApproved
+        - SaleStarted
+      abis:
+        - name: HexisBooth
+          file: ./abis/HexisBooth.json
+      eventHandlers:
+        - event: ContentPurchased(indexed address,uint256,indexed address,uint8,uint8)
+          handler: handleContentPurchased
+        - event: FundsCheckedOut(indexed address,uint256,uint256,uint256,uint8)
+          handler: handleFundsCheckedOut
+        - event: FundsWithdrawn(indexed address,uint256,uint8)
+          handler: handleFundsWithdrawn
+        - event: OwnershipHandoverCanceled(indexed address)
+          handler: handleOwnershipHandoverCanceled
+        - event: OwnershipHandoverRequested(indexed address)
+          handler: handleOwnershipHandoverRequested
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PreviewTextUpdated(string)
+          handler: handlePreviewTextUpdated
+        - event: PriceUpdated(uint256)
+          handler: handlePriceUpdated
+        - event: PurchaseRequested(indexed address,string)
+          handler: handlePurchaseRequested
+        - event: RequestApproved(indexed address)
+          handler: handleRequestApproved
+        - event: SaleStarted(uint8)
+          handler: handleSaleStarted

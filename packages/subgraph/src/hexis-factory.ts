@@ -5,11 +5,13 @@ import {
   OwnershipTransferred as OwnershipTransferredEvent,
 } from '../generated/HexisFactory/HexisFactory';
 import {
+  Booth,
   BoothCreated,
   OwnershipHandoverCanceled,
   OwnershipHandoverRequested,
   OwnershipTransferred,
 } from '../generated/schema';
+import { HexisBooth as HexisBoothTemplate } from '../generated/templates';
 
 export function handleBoothCreated(event: BoothCreatedEvent): void {
   let entity = new BoothCreated(
@@ -28,6 +30,20 @@ export function handleBoothCreated(event: BoothCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let booth = new Booth(event.params.boothAddress);
+  booth.owner = event.params.owner;
+  booth.previewText = event.params.previewText;
+  booth.price = event.params.price;
+  booth.paymentOption = event.params.paymentOption;
+  booth.paymentTokenAddress = event.params.paymentTokenAddress;
+  booth.saleType = event.params.saleType;
+  booth.blockNumber = event.block.number;
+  booth.blockTimestamp = event.block.timestamp;
+  booth.transactionHash = event.transaction.hash;
+  booth.save();
+
+  HexisBoothTemplate.create(event.params.boothAddress);
 }
 
 export function handleOwnershipHandoverCanceled(
