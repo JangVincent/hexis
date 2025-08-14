@@ -1,6 +1,11 @@
 import { aes256Encrypt } from '@commons/utils/cryptoAES256GCM';
 import { db } from '@db/config';
-import { boothSaleTextTable, boothTable } from '@db/schema';
+import {
+  BoothPaymentOption,
+  boothSaleTextTable,
+  BoothSaleType,
+  boothTable,
+} from '@db/schema';
 import { HttpStatusCode } from 'axios';
 import { count, eq } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
@@ -36,13 +41,25 @@ export const BoothService = {
   },
 
   async createBooth({
+    id,
     owner,
-    sampleText,
+    price,
+    previewText,
+    boothAddress,
+    paymentOption,
+    paymentTokenAddress,
+    saleType,
     blockNumber,
     fullText,
   }: {
+    id: string;
     owner: string;
-    sampleText: string;
+    price: string;
+    previewText: string;
+    boothAddress: string;
+    paymentOption: BoothPaymentOption;
+    paymentTokenAddress: string;
+    saleType: BoothSaleType;
     blockNumber: string;
     fullText: string;
   }) {
@@ -51,8 +68,14 @@ export const BoothService = {
         const booth = await tx
           .insert(boothTable)
           .values({
+            id,
             owner,
-            sampleText,
+            price,
+            previewText,
+            boothAddress,
+            paymentOption,
+            paymentTokenAddress,
+            saleType,
             blockNumber,
           })
           .returning();
@@ -80,11 +103,11 @@ export const BoothService = {
   async patchBooth({
     ownerAddress,
     boothId,
-    sampleText,
+    previewText,
   }: {
     ownerAddress: string;
     boothId: string;
-    sampleText: string;
+    previewText: string;
   }) {
     const booth = await db
       .select()
@@ -101,7 +124,7 @@ export const BoothService = {
 
     const updatedBooth = await db
       .update(boothTable)
-      .set({ sampleText })
+      .set({ previewText })
       .where(eq(boothTable.id, boothId))
       .returning();
 

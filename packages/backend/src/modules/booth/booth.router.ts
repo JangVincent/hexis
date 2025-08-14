@@ -58,17 +58,32 @@ BoothRouter.post(
   validationMiddleware(CreateBoothDtoValidationScheme, 'json'),
   async c => {
     const payload = c.get('jwtPayload') as JwtPayload;
-    const { owner, sampleText, blockNumber, fullText } = c.req.valid(
-      'json'
-    ) as CreateBoothDTO;
+    const {
+      id,
+      owner,
+      price,
+      previewText,
+      boothAddress,
+      paymentOption,
+      paymentTokenAddress,
+      saleType,
+      blockNumber,
+      fullText,
+    } = c.req.valid('json') as CreateBoothDTO;
 
     if (payload.address !== owner) {
       throw new HTTPException(HttpStatusCode.Forbidden);
     }
 
     const booth = await BoothService.createBooth({
+      id,
       owner,
-      sampleText,
+      price,
+      previewText,
+      boothAddress,
+      paymentOption,
+      paymentTokenAddress,
+      saleType,
       blockNumber,
       fullText,
     });
@@ -86,11 +101,11 @@ BoothRouter.patch(
   async c => {
     const payload = c.get('jwtPayload') as JwtPayload;
     const { boothId } = c.req.valid('param') as PatchBoothParamDTO;
-    const { sampleText } = c.req.valid('json') as PatchBoothDTO;
+    const { previewText } = c.req.valid('json') as PatchBoothDTO;
 
     const updatedBooth = await BoothService.patchBooth({
       boothId,
-      sampleText,
+      previewText,
       ownerAddress: payload.address,
     });
 

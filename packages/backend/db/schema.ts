@@ -1,4 +1,12 @@
-import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users', {
   id: uuid('id').default(crypto.randomUUID()).primaryKey().notNull(),
@@ -17,10 +25,38 @@ export type Nonce = typeof noncesTable.$inferSelect;
 export type NewNonce = typeof noncesTable.$inferInsert;
 
 // Booth
+const boothPaymentOptionEnum = pgEnum('booth_payment_option', [
+  'NATIVE_CURRENCY',
+  'ERC20_TOKEN',
+]);
+export enum BoothPaymentOption {
+  NATIVE_CURRENCY = 'NATIVE_CURRENCY',
+  ERC20_TOKEN = 'ERC20_TOKEN',
+}
+
+const boothSaleTypeEnum = pgEnum('booth_sale_type', [
+  'INSTANT_SALE',
+  'REQUEST_SALE',
+]);
+export enum BoothSaleType {
+  INSTANT_SALE = 'INSTANT_SALE',
+  REQUEST_SALE = 'REQUEST_SALE',
+}
+
 export const boothTable = pgTable('booths', {
-  id: uuid('id').default(crypto.randomUUID()).primaryKey().notNull(),
-  owner: varchar({ length: 42 }).notNull(), //wallet address
-  sampleText: text('sample_text').notNull(),
+  id: varchar({ length: 100 }).primaryKey().notNull(),
+  owner: varchar({ length: 42 }).notNull(),
+  price: varchar({ length: 1000 }).notNull(),
+  previewText: text('preview_text').notNull(),
+
+  boothAddress: varchar({ length: 42 }).notNull(),
+
+  paymentOption: boothPaymentOptionEnum('payment_option').notNull(),
+  paymentTokenAddress: varchar({ length: 42 }).notNull(),
+
+  saleType: boothSaleTypeEnum('sale_type').notNull(),
+  isSaleStarted: boolean('is_sale_started').notNull().default(false),
+
   blockNumber: varchar({ length: 100 }).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
@@ -28,8 +64,8 @@ export type Booth = typeof boothTable.$inferSelect;
 export type NewBooth = typeof boothTable.$inferInsert;
 
 export const boothSaleTextTable = pgTable('booth_sale_text', {
-  id: uuid('id').default(crypto.randomUUID()).primaryKey().notNull(),
-  boothId: uuid('booth_id')
+  boothId: varchar({ length: 100 })
+    .primaryKey()
     .notNull()
     .references(() => boothTable.id),
   encryptedText: text('encrypted_text').notNull(),

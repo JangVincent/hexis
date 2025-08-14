@@ -1,5 +1,5 @@
 {
-  "id": "8be4d7df-bc1a-45ab-8e5b-3c3b827cbf64",
+  "id": "323b9747-5806-4d38-8453-cc36e75f6f98",
   "prevId": "ffeee974-8bc0-4d13-92c8-af437de42cd2",
   "version": "7",
   "dialect": "postgresql",
@@ -8,17 +8,10 @@
       "name": "booth_sale_text",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
+        "boothId": {
+          "name": "boothId",
+          "type": "varchar(100)",
           "primaryKey": true,
-          "notNull": true,
-          "default": "'ebb08752-6e34-4f29-bc07-ada84eea500b'"
-        },
-        "booth_id": {
-          "name": "booth_id",
-          "type": "uuid",
-          "primaryKey": false,
           "notNull": true
         },
         "encrypted_text": {
@@ -49,12 +42,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "booth_sale_text_booth_id_booths_id_fk": {
-          "name": "booth_sale_text_booth_id_booths_id_fk",
+        "booth_sale_text_boothId_booths_id_fk": {
+          "name": "booth_sale_text_boothId_booths_id_fk",
           "tableFrom": "booth_sale_text",
           "tableTo": "booths",
           "columnsFrom": [
-            "booth_id"
+            "boothId"
           ],
           "columnsTo": [
             "id"
@@ -75,10 +68,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "varchar(100)",
           "primaryKey": true,
-          "notNull": true,
-          "default": "'5dcdea8e-c305-4180-9f18-3b8901509ab6'"
+          "notNull": true
         },
         "owner": {
           "name": "owner",
@@ -86,11 +78,50 @@
           "primaryKey": false,
           "notNull": true
         },
-        "sample_text": {
-          "name": "sample_text",
+        "price": {
+          "name": "price",
+          "type": "varchar(1000)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "preview_text": {
+          "name": "preview_text",
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "boothAddress": {
+          "name": "boothAddress",
+          "type": "varchar(42)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payment_option": {
+          "name": "payment_option",
+          "type": "booth_payment_option",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "paymentTokenAddress": {
+          "name": "paymentTokenAddress",
+          "type": "varchar(42)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sale_type": {
+          "name": "sale_type",
+          "type": "booth_sale_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_sale_started": {
+          "name": "is_sale_started",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "blockNumber": {
           "name": "blockNumber",
@@ -154,7 +185,7 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "default": "'95a55065-155d-4e52-a2fd-a8541690615c'"
+          "default": "'a37b5df1-b4f3-465f-aa5f-7b82cd312bc0'"
         },
         "walletAddress": {
           "name": "walletAddress",
