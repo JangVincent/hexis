@@ -63,7 +63,7 @@ export async function deployBooth(
 
   const logs = parseEventLogs({
     abi: parseAbi([
-      'event BoothCreated(address indexed boothAddress, address indexed owner)',
+      'event BoothCreated(address indexed boothAddress, address indexed owner, string previewText, uint256 price, uint8 paymentOption, address paymentTokenAddress, uint8 saleType)',
     ]),
     logs: receipt.logs,
   });

@@ -9,7 +9,7 @@ import { deployToken, mintTestTokens } from './TestToken';
 import { calculateTxFee, sleep } from '../lib/util';
 import { PaymentOption, SaleType } from '../lib/shared';
 
-const sleepSeconds = 5;
+const sleepSeconds = 10;
 
 const deployedTestTokenAddress: Hex | undefined =
   '0x45081e24fE95dEa81a56d80487825524c8ad6c69';
@@ -105,6 +105,8 @@ async function testBoothInstantSaleNative({
   const checkOutHash = await contract.write.checkOut({
     account: adminAccount,
   });
+
+  sleep(sleepSeconds);
 
   console.log('- Admin check out initiated:', checkOutHash);
 
@@ -761,11 +763,14 @@ async function deployTemplateContract({
 
 async function main() {
   console.log(`${'═'.repeat(5)} Running Hexis Factory Tests ${'═'.repeat(5)}`);
-  const templateContract = await deployTemplateContract({});
+  const templateContract = await deployTemplateContract({
+    deployedContractAddress: '0x1B169074a6F51920BBb8607fae3D3Ff757c7da5f',
+  });
 
   console.log(`${'═'.repeat(5)} Running Hexis Factory Tests ${'═'.repeat(5)}`);
   const factoryContract = await deployFactoryContract({
     templateContractAddress: templateContract.address,
+    deployedContractAddress: '0xa212530701b58d110bf3A308f2dA2Fa3cc500A1c',
   });
 
   console.log(
@@ -774,7 +779,7 @@ async function main() {
 
   const instantSaleNativeBooth = await deployBooth(factoryContract.address, {
     ownerAddress: adminAccount.address,
-    previewText: 'Test Booth Instant Sale Native',
+    previewText: 'Test Booth Instant Sale Native ' + new Date().getTime(),
     price: parseEther('0.001'),
     saleType: SaleType.InstantSale,
     paymentOption: PaymentOption.NativeCurrency,
@@ -789,7 +794,7 @@ async function main() {
   );
   const instantSaleERC20Booth = await deployBooth(factoryContract.address, {
     ownerAddress: adminAccount.address,
-    previewText: 'Test Booth Instant Sale ERC20',
+    previewText: 'Test Booth Instant Sale ERC20 ' + new Date().getTime(),
     price: BigInt(100 * 10 ** 18), // 100 Tokens
     saleType: SaleType.InstantSale,
     paymentOption: PaymentOption.ERC20Token,
@@ -805,7 +810,7 @@ async function main() {
   );
   const requestSaleNativeBooth = await deployBooth(factoryContract.address, {
     ownerAddress: adminAccount.address,
-    previewText: 'Test Booth Request Sale Native',
+    previewText: 'Test Booth Request Sale Native ' + new Date().getTime(),
     price: parseEther('0.0001'),
     saleType: SaleType.RequestSale,
     paymentOption: PaymentOption.NativeCurrency,
@@ -820,7 +825,7 @@ async function main() {
   );
   const requestSaleERC20Booth = await deployBooth(factoryContract.address, {
     ownerAddress: adminAccount.address,
-    previewText: 'Test Booth Request Sale ERC20',
+    previewText: 'Test Booth Request Sale ERC20 ' + new Date().getTime(),
     price: BigInt(100 * 10 ** 18), // 100 Tokens
     saleType: SaleType.RequestSale,
     paymentOption: PaymentOption.ERC20Token,

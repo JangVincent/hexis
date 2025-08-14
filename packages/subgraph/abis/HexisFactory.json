@@ -29,6 +29,36 @@
         "internalType": "address",
         "name": "owner",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "previewText",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum HexisBooth.PaymentOption",
+        "name": "paymentOption",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "paymentTokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum HexisBooth.SaleType",
+        "name": "saleType",
+        "type": "uint8"
       }
     ],
     "name": "BoothCreated",
