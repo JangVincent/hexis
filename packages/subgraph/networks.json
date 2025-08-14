@@ -1,8 +1,8 @@
 {
   "sepolia": {
     "HexisFactory": {
-      "address": "0xBbAff867d6fF647028f67f2c4C60479bF6F5be39",
-      "startBlock": 8883106
+      "address": "0x092d6d0050e3C450b3cC3Ab3b290373BEe56E689",
+      "startBlock": 8975692
     }
   }
 }

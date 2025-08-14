@@ -8,9 +8,9 @@ dataSources:
     name: HexisFactory
     network: sepolia
     source:
-      address: '0xBbAff867d6fF647028f67f2c4C60479bF6F5be39'
+      address: '0xa212530701b58d110bf3A308f2dA2Fa3cc500A1c'
       abi: HexisFactory
-      startBlock: 8883106
+      startBlock: 8975692
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -24,7 +24,7 @@ dataSources:
         - name: HexisFactory
           file: ./abis/HexisFactory.json
       eventHandlers:
-        - event: BoothCreated(indexed address,indexed address)
+        - event: BoothCreated(indexed address,indexed address,string,uint256,uint8,address,uint8)
           handler: handleBoothCreated
         - event: OwnershipHandoverCanceled(indexed address)
           handler: handleOwnershipHandoverCanceled
@@ -33,3 +33,52 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/hexis-factory.ts
+templates:
+  - kind: ethereum/contract
+    name: HexisBooth
+    network: sepolia
+    source:
+      abi: HexisBooth
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/hexis-booth.ts
+      entities:
+        - ContentPurchased
+        - FundsCheckedOut
+        - FundsWithdrawn
+        - OwnershipHandoverCanceled
+        - OwnershipHandoverRequested
+        - OwnershipTransferred
+        - PreviewTextUpdated
+        - PriceUpdated
+        - PurchaseRequested
+        - RequestApproved
+        - SaleStarted
+      abis:
+        - name: HexisBooth
+          file: ./abis/HexisBooth.json
+      eventHandlers:
+        - event: ContentPurchased(indexed address,uint256,indexed address,uint8,uint8)
+          handler: handleContentPurchased
+        - event: FundsCheckedOut(indexed address,uint256,uint256,uint256,uint8)
+          handler: handleFundsCheckedOut
+        - event: FundsWithdrawn(indexed address,uint256,uint8)
+          handler: handleFundsWithdrawn
+        - event: OwnershipHandoverCanceled(indexed address)
+          handler: handleOwnershipHandoverCanceled
+        - event: OwnershipHandoverRequested(indexed address)
+          handler: handleOwnershipHandoverRequested
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PreviewTextUpdated(string)
+          handler: handlePreviewTextUpdated
+        - event: PriceUpdated(uint256)
+          handler: handlePriceUpdated
+        - event: PurchaseRequested(indexed address,string)
+          handler: handlePurchaseRequested
+        - event: RequestApproved(indexed address)
+          handler: handleRequestApproved
+        - event: SaleStarted(uint8)
+          handler: handleSaleStarted

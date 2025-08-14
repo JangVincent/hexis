@@ -2,6 +2,11 @@ type BoothCreated @entity(immutable: true) {
   id: Bytes!
   boothAddress: Bytes! # address
   owner: Bytes! # address
+  previewText: String! # string
+  price: BigInt! # uint256
+  paymentOption: Int! # uint8
+  paymentTokenAddress: Bytes! # address
+  saleType: Int! # uint8
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -27,6 +32,114 @@ type OwnershipTransferred @entity(immutable: true) {
   id: Bytes!
   oldOwner: Bytes! # address
   newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ContentPurchased @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "purchases") # Booth 엔티티와 연결
+  buyer: Bytes! # address
+  amountPaid: BigInt! # uint256
+  tokenAddress: Bytes! # address
+  paymentOption: Int! # uint8
+  saleType: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FundsCheckedOut @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "checkouts")
+  owner: Bytes! # address
+  grossAmount: BigInt! # uint256
+  feeAmount: BigInt! # uint256
+  netAmount: BigInt! # uint256
+  paymentOption: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FundsWithdrawn @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "withdrawals")
+  owner: Bytes! # address
+  amount: BigInt! # uint256
+  paymentOption: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PreviewTextUpdated @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "previewTextUpdates")
+  newPreviewText: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PriceUpdated @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "priceUpdates")
+  newPrice: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PurchaseRequested @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "purchaseRequests")
+  requester: Bytes! # address
+  contactInfo: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RequestApproved @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "requestApprovals")
+  requester: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SaleStarted @entity(immutable: true) {
+  id: Bytes!
+  booth: Booth! @derivedFrom(field: "saleStarts")
+  saleType: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# 기존 BoothCreated 엔티티를 Booth로 변경하고, 다른 엔티티들과 관계 설정
+type Booth @entity(immutable: true) {
+  id: Bytes! # boothAddress
+  owner: Bytes! # address
+  previewText: String!
+  price: BigInt!
+  paymentOption: Int!
+  paymentTokenAddress: Bytes!
+  saleType: Int!
+
+  # 관계 설정
+  purchases: [ContentPurchased!]! @derivedFrom(field: "booth")
+  checkouts: [FundsCheckedOut!]! @derivedFrom(field: "booth")
+  withdrawals: [FundsWithdrawn!]! @derivedFrom(field: "booth")
+  previewTextUpdates: [PreviewTextUpdated!]! @derivedFrom(field: "booth")
+  priceUpdates: [PriceUpdated!]! @derivedFrom(field: "booth")
+  purchaseRequests: [PurchaseRequested!]! @derivedFrom(field: "booth")
+  requestApprovals: [RequestApproved!]! @derivedFrom(field: "booth")
+  saleStarts: [SaleStarted!]! @derivedFrom(field: "booth")
+
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

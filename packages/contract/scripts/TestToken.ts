@@ -12,7 +12,7 @@ export async function deployToken(existingAddress?: Hex) {
     adminAccount.address,
   ]);
 
-  return await hre.viem.getContractAt('HexisBooth', address);
+  return await hre.viem.getContractAt('TestToken', address);
 }
 
 export async function mintTestTokens({
