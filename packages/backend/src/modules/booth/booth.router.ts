@@ -16,8 +16,6 @@ import {
 
 import { jwtMiddleware } from '@commons/middlewares/auth.middleware';
 import { JwtPayload } from '@commons/types';
-import { HttpStatusCode } from 'axios';
-import { HTTPException } from 'hono/http-exception';
 import type { JwtVariables } from 'hono/jwt';
 
 export const BoothRouter = new Hono<{ Variables: JwtVariables }>();
@@ -58,33 +56,11 @@ BoothRouter.post(
   validationMiddleware(CreateBoothDtoValidationScheme, 'json'),
   async c => {
     const payload = c.get('jwtPayload') as JwtPayload;
-    const {
-      id,
-      owner,
-      price,
-      previewText,
-      boothAddress,
-      paymentOption,
-      paymentTokenAddress,
-      saleType,
-      blockNumber,
-      fullText,
-    } = c.req.valid('json') as CreateBoothDTO;
-
-    if (payload.address !== owner) {
-      throw new HTTPException(HttpStatusCode.Forbidden);
-    }
+    const { id, fullText } = c.req.valid('json') as CreateBoothDTO;
 
     const booth = await BoothService.createBooth({
       id,
-      owner,
-      price,
-      previewText,
-      boothAddress,
-      paymentOption,
-      paymentTokenAddress,
-      saleType,
-      blockNumber,
+      requestOwnerAddress: payload.address,
       fullText,
     });
 

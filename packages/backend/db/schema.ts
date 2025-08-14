@@ -29,19 +29,10 @@ const boothPaymentOptionEnum = pgEnum('booth_payment_option', [
   'NATIVE_CURRENCY',
   'ERC20_TOKEN',
 ]);
-export enum BoothPaymentOption {
-  NATIVE_CURRENCY = 'NATIVE_CURRENCY',
-  ERC20_TOKEN = 'ERC20_TOKEN',
-}
-
 const boothSaleTypeEnum = pgEnum('booth_sale_type', [
   'INSTANT_SALE',
   'REQUEST_SALE',
 ]);
-export enum BoothSaleType {
-  INSTANT_SALE = 'INSTANT_SALE',
-  REQUEST_SALE = 'REQUEST_SALE',
-}
 
 export const boothTable = pgTable('booths', {
   id: varchar({ length: 100 }).primaryKey().notNull(),
