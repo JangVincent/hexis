@@ -2,27 +2,48 @@ import {
   BoothCreated as BoothCreatedEvent,
   OwnershipHandoverCanceled as OwnershipHandoverCanceledEvent,
   OwnershipHandoverRequested as OwnershipHandoverRequestedEvent,
-  OwnershipTransferred as OwnershipTransferredEvent
-} from "../generated/HexisFactory/HexisFactory"
+  OwnershipTransferred as OwnershipTransferredEvent,
+} from '../generated/HexisFactory/HexisFactory';
 import {
+  Booth,
   BoothCreated,
   OwnershipHandoverCanceled,
   OwnershipHandoverRequested,
-  OwnershipTransferred
-} from "../generated/schema"
+  OwnershipTransferred,
+} from '../generated/schema';
+import { HexisBooth as HexisBoothTemplate } from '../generated/templates';
 
 export function handleBoothCreated(event: BoothCreatedEvent): void {
   let entity = new BoothCreated(
     event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.boothAddress = event.params.boothAddress
-  entity.owner = event.params.owner
+  );
+  entity.boothAddress = event.params.boothAddress;
+  entity.owner = event.params.owner;
+  entity.previewText = event.params.previewText;
+  entity.price = event.params.price;
+  entity.paymentOption = event.params.paymentOption;
+  entity.paymentTokenAddress = event.params.paymentTokenAddress;
+  entity.saleType = event.params.saleType;
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
 
-  entity.save()
+  entity.save();
+
+  let booth = new Booth(event.params.boothAddress);
+  booth.owner = event.params.owner;
+  booth.previewText = event.params.previewText;
+  booth.price = event.params.price;
+  booth.paymentOption = event.params.paymentOption;
+  booth.paymentTokenAddress = event.params.paymentTokenAddress;
+  booth.saleType = event.params.saleType;
+  booth.blockNumber = event.block.number;
+  booth.blockTimestamp = event.block.timestamp;
+  booth.transactionHash = event.transaction.hash;
+  booth.save();
+
+  HexisBoothTemplate.create(event.params.boothAddress);
 }
 
 export function handleOwnershipHandoverCanceled(
@@ -30,14 +51,14 @@ export function handleOwnershipHandoverCanceled(
 ): void {
   let entity = new OwnershipHandoverCanceled(
     event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.pendingOwner = event.params.pendingOwner
+  );
+  entity.pendingOwner = event.params.pendingOwner;
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
 
-  entity.save()
+  entity.save();
 }
 
 export function handleOwnershipHandoverRequested(
@@ -45,14 +66,14 @@ export function handleOwnershipHandoverRequested(
 ): void {
   let entity = new OwnershipHandoverRequested(
     event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.pendingOwner = event.params.pendingOwner
+  );
+  entity.pendingOwner = event.params.pendingOwner;
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
 
-  entity.save()
+  entity.save();
 }
 
 export function handleOwnershipTransferred(
@@ -60,13 +81,13 @@ export function handleOwnershipTransferred(
 ): void {
   let entity = new OwnershipTransferred(
     event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.oldOwner = event.params.oldOwner
-  entity.newOwner = event.params.newOwner
+  );
+  entity.oldOwner = event.params.oldOwner;
+  entity.newOwner = event.params.newOwner;
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
 
-  entity.save()
+  entity.save();
 }

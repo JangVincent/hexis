@@ -43,9 +43,9 @@ contract HexisBooth is Ownable {
     bool public saleStarted;
     SaleType public currentSaleType;
 
-    mapping(address => bool) public hasAccess;
     mapping(address => bool) public hasRequested;
     mapping(address => bool) public isApprovedToBuy;
+    mapping(address => bool) public hasAccess;
 
     mapping(address => uint256) public withdrawableBalance;
     uint256 public settledBalance;
