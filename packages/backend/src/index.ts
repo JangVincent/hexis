@@ -1,3 +1,4 @@
+import { BoothRouter } from '@modules/booth/booth.router';
 import 'dotenv/config';
 import { Hono } from 'hono';
 import { AuthRouter } from './modules/auth/auth.router';
@@ -9,6 +10,7 @@ app.get('/', c => {
 });
 
 app.route('/auth', AuthRouter);
+app.route('/booths', BoothRouter);
 
 export default {
   port: process.env.PORT || 8080,

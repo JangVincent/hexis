@@ -5,7 +5,7 @@ import z from 'zod';
 
 export const validationMiddleware = (
   schema: z.ZodSchema,
-  target: 'json' | 'form' | 'query'
+  target: 'json' | 'form' | 'query' | 'param'
 ) => {
   return zValidator(target, schema, (result, c) => {
     if (!result.success) {
