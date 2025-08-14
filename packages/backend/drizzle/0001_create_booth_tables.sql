@@ -21,5 +21,5 @@ CREATE TABLE "booths" (
 );
 --> statement-breakpoint
 ALTER TABLE "nonces" ALTER COLUMN "walletAddress" SET DATA TYPE varchar(42);--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "id" SET DEFAULT 'a37b5df1-b4f3-465f-aa5f-7b82cd312bc0';--> statement-breakpoint
+ALTER TABLE "users" ALTER COLUMN "id" SET DEFAULT 'c3aa9754-214d-4b50-bc1d-c674f93c3894';--> statement-breakpoint
 ALTER TABLE "booth_sale_text" ADD CONSTRAINT "booth_sale_text_boothId_booths_id_fk" FOREIGN KEY ("boothId") REFERENCES "public"."booths"("id") ON DELETE no action ON UPDATE no action;

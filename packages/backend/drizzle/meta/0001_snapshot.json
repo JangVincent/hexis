@@ -1,5 +1,5 @@
 {
-  "id": "323b9747-5806-4d38-8453-cc36e75f6f98",
+  "id": "be3a9012-a850-4dfe-bec2-1923fca34e8f",
   "prevId": "ffeee974-8bc0-4d13-92c8-af437de42cd2",
   "version": "7",
   "dialect": "postgresql",
@@ -185,7 +185,7 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "default": "'a37b5df1-b4f3-465f-aa5f-7b82cd312bc0'"
+          "default": "'c3aa9754-214d-4b50-bc1d-c674f93c3894'"
         },
         "walletAddress": {
           "name": "walletAddress",
