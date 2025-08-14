@@ -32,7 +32,9 @@ export const boothSaleTextTable = pgTable('booth_sale_text', {
   boothId: uuid('booth_id')
     .notNull()
     .references(() => boothTable.id),
-  text: text('text').notNull(),
+  encryptedText: text('encrypted_text').notNull(),
+  iv: text('iv').notNull(),
+  authTag: text('auth_tag').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 export type BoothSaleText = typeof boothSaleTextTable.$inferSelect;
