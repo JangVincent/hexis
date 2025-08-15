@@ -1,10 +1,10 @@
 import { aes256Encrypt } from '@commons/utils/cryptoAES256GCM';
 import { db } from '@db/config';
 import { boothSaleTextTable, boothTable, NewBooth } from '@db/schema';
+import { SubGraphService } from '@external/subgraph/subgraph.service';
 import { HttpStatusCode } from 'axios';
 import { count, eq } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
-import { SubGraphService } from '../../external/subgraph/subgraph.service';
 
 export const BoothService = {
   async getBooths(page: number, size: number) {
@@ -29,7 +29,7 @@ export const BoothService = {
       .from(boothTable)
       .where(eq(boothTable.id, boothId));
 
-    if (!booth) {
+    if (booth.length === 0) {
       throw new HTTPException(HttpStatusCode.NotFound, {
         message: 'Booth not found',
       });
@@ -63,12 +63,17 @@ export const BoothService = {
       price: createdBooth.price,
       previewText: createdBooth.previewText,
       boothAddress: createdBooth.boothAddress.toLowerCase(),
-      paymentOption:
-        createdBooth.paymentOption === 0 ? 'NATIVE_CURRENCY' : 'ERC20_TOKEN',
+      paymentOption: createdBooth.paymentOption as unknown as
+        | 'NATIVE_CURRENCY'
+        | 'ERC20_TOKEN',
       paymentTokenAddress: createdBooth.paymentTokenAddress.toLowerCase(),
-      saleType: createdBooth.saleType === 0 ? 'INSTANT_SALE' : 'REQUEST_SALE',
+      saleType: createdBooth.saleType as unknown as
+        | 'INSTANT_SALE'
+        | 'REQUEST_SALE',
       blockNumber: createdBooth.blockNumber,
     };
+
+    console.log(insertData);
 
     try {
       const booth = await db.transaction(async tx => {
@@ -111,7 +116,7 @@ export const BoothService = {
       .from(boothTable)
       .where(eq(boothTable.id, boothId));
 
-    if (!booth) {
+    if (booth.length === 0) {
       throw new HTTPException(HttpStatusCode.NotFound, {
         message: 'Booth not found',
       });

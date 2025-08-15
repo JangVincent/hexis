@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import dotenv from 'dotenv';
 
 const IV_LENGTH = 16;
 const SECRET_KEY = Buffer.from(process.env.FULL_TEXT_ENCRYPTION_KEY, 'hex');
@@ -10,7 +9,6 @@ const SECRET_KEY = Buffer.from(process.env.FULL_TEXT_ENCRYPTION_KEY, 'hex');
  * @returns - iv, encrypted, authTag
  */
 export function aes256Encrypt(text: string) {
-  dotenv.config();
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv('aes-256-gcm', SECRET_KEY, iv);
 
@@ -19,7 +17,7 @@ export function aes256Encrypt(text: string) {
 
   const authTag = cipher.getAuthTag().toString('hex');
 
-  // iv, authTag, 암호문을 모두 저장해야 복호화 가능
+  // Save iv, authTag both of property for decrypt
   return {
     iv: iv.toString('hex'),
     encrypted,
@@ -43,7 +41,6 @@ export function aes256Decrypt({
   encrypted: string;
   authTag: string;
 }) {
-  dotenv.config();
   const decipher = crypto.createDecipheriv(
     'aes-256-gcm',
     SECRET_KEY,

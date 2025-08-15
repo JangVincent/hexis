@@ -25,14 +25,24 @@ export type Nonce = typeof noncesTable.$inferSelect;
 export type NewNonce = typeof noncesTable.$inferInsert;
 
 // Booth
-const boothPaymentOptionEnum = pgEnum('booth_payment_option', [
+export const boothPaymentOptionEnum = pgEnum('booth_payment_option', [
   'NATIVE_CURRENCY',
   'ERC20_TOKEN',
 ]);
-const boothSaleTypeEnum = pgEnum('booth_sale_type', [
+export const boothSaleTypeEnum = pgEnum('booth_sale_type', [
   'INSTANT_SALE',
   'REQUEST_SALE',
 ]);
+
+export enum BoothSaleType {
+  'INSTANT_SALE',
+  'REQUEST_SALE',
+}
+
+export enum BoothPaymentOption {
+  'NATIVE_CURRENCY',
+  'ERC20_TOKEN',
+}
 
 export const boothTable = pgTable('booths', {
   id: varchar({ length: 100 }).primaryKey().notNull(),

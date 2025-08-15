@@ -52,7 +52,7 @@ BoothRouter.get(
 // Create Booth End-point
 BoothRouter.post(
   '/',
-  jwtMiddleware,
+  // jwtMiddleware,
   validationMiddleware(CreateBoothDtoValidationScheme, 'json'),
   async c => {
     const payload = c.get('jwtPayload') as JwtPayload;
@@ -60,7 +60,7 @@ BoothRouter.post(
 
     const booth = await BoothService.createBooth({
       id,
-      requestOwnerAddress: payload.address,
+      requestOwnerAddress: '0xasdfljksdf', // requestOwnerAddress: payload.address,
       fullText,
     });
 

@@ -1,3 +1,4 @@
+import { BoothPaymentOption, BoothSaleType } from '@db/schema';
 import { HttpStatusCode } from 'axios';
 import { gql, request } from 'graphql-request';
 import { HTTPException } from 'hono/http-exception';
@@ -7,6 +8,7 @@ const URL = process.env.SUB_GRAPH_URL;
 
 export const SubGraphService = {
   async getCreatedBoothsByBoothId(boothId: string): Promise<BoothCreated> {
+    console.log(boothId);
     const query = gql`
       {
         boothCreated(
@@ -33,6 +35,11 @@ export const SubGraphService = {
 
     try {
       const data = await request(URL, query, {}, headers);
+      data['boothCreated'].paymentOption =
+        BoothPaymentOption[data['boothCreated'].paymentOption];
+      data['boothCreated'].saleType =
+        BoothSaleType[data['boothCreated'].saleType];
+
       return data['boothCreated'] as BoothCreated;
     } catch (error) {
       console.error(error);
