@@ -1,15 +1,16 @@
+import { db } from '@db/config';
+import { noncesTable, User, usersTable } from '@db/schema';
 import { HttpStatusCode } from 'axios';
 import dayjs from 'dayjs';
 import { eq } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
-import { db } from '../../db/config';
-import { User, noncesTable, usersTable } from '../../db/schema';
+
 import {
-  JwtPeriodStringValue,
   generateAccessToken,
-} from '../lib/utils/generateAccessToken';
+  JwtPeriodStringValue,
+} from '@commons/utils/generateAccessToken';
 import { PostLoginDTO } from './dtos-req';
 import { LoginResponse } from './dtos-res';
 

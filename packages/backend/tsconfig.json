@@ -8,9 +8,10 @@
     "moduleResolution": "node",
     "types": ["bun-types"],
     "paths": {
+      "@db/*": ["./db/*"],
+      "@external/*": ["./src/external/*"],
       "@modules/*": ["./src/modules/*"],
-      "@commons/*": ["./src/commons/*"],
-      "@db/*": ["./db/*"]
+      "@commons/*": ["./src/commons/*"]
     }
   }
 }
