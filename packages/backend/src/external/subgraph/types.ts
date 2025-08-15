@@ -1,4 +1,12 @@
-import { BoothPaymentOption, BoothSaleType } from '@db/schema';
+export enum BoothSaleType {
+  'INSTANT_SALE',
+  'REQUEST_SALE',
+}
+
+export enum BoothPaymentOption {
+  'NATIVE_CURRENCY',
+  'ERC20_TOKEN',
+}
 
 export interface BoothCreated {
   id: string;

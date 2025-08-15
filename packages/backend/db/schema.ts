@@ -25,24 +25,14 @@ export type Nonce = typeof noncesTable.$inferSelect;
 export type NewNonce = typeof noncesTable.$inferInsert;
 
 // Booth
-export const boothPaymentOptionEnum = pgEnum('booth_payment_option', [
+export const BoothPaymentOptionEnum = pgEnum('booth_payment_option', [
   'NATIVE_CURRENCY',
   'ERC20_TOKEN',
 ]);
-export const boothSaleTypeEnum = pgEnum('booth_sale_type', [
+export const BoothSaleTypeEnum = pgEnum('booth_sale_type', [
   'INSTANT_SALE',
   'REQUEST_SALE',
 ]);
-
-export enum BoothSaleType {
-  'INSTANT_SALE',
-  'REQUEST_SALE',
-}
-
-export enum BoothPaymentOption {
-  'NATIVE_CURRENCY',
-  'ERC20_TOKEN',
-}
 
 export const boothTable = pgTable('booths', {
   id: varchar({ length: 100 }).primaryKey().notNull(),
@@ -52,10 +42,10 @@ export const boothTable = pgTable('booths', {
 
   boothAddress: varchar({ length: 42 }).notNull(),
 
-  paymentOption: boothPaymentOptionEnum('payment_option').notNull(),
+  paymentOption: BoothPaymentOptionEnum('payment_option').notNull(),
   paymentTokenAddress: varchar({ length: 42 }).notNull(),
 
-  saleType: boothSaleTypeEnum('sale_type').notNull(),
+  saleType: BoothSaleTypeEnum('sale_type').notNull(),
   isSaleStarted: boolean('is_sale_started').notNull().default(false),
 
   blockNumber: varchar({ length: 100 }).notNull(),

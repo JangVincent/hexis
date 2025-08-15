@@ -1,8 +1,7 @@
-import { BoothPaymentOption, BoothSaleType } from '@db/schema';
 import { HttpStatusCode } from 'axios';
 import { gql, request } from 'graphql-request';
 import { HTTPException } from 'hono/http-exception';
-import { BoothCreated } from './types';
+import { BoothCreated, BoothPaymentOption, BoothSaleType } from './types';
 
 const URL = process.env.SUB_GRAPH_URL;
 
