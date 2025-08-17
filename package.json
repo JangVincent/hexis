@@ -2,6 +2,12 @@
   "name": "hexis",
   "version": "0.0.0",
   "description": "",
+  "licenses": [
+    {
+      "type": "Viral Public License",
+      "url": "https://viralpubliclicense.org/"
+    }
+  ],
   "scripts": {
     "frontend": "bun run --cwd packages/frontend dev",
     "backend": "bun run --cwd packages/backend dev",

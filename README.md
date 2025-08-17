@@ -51,3 +51,7 @@ hexis.cat/
 ### Always sign your commits
 
 Check out [this guide](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits) to sign your commits.
+
+## License
+
+This project is licensed under the [Viral Public License v1.0](https://viralpubliclicense.org/). This license allows you to use, modify, and distribute the code freely,
