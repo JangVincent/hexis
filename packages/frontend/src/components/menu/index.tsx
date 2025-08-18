@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 
-import HealthIndicator from '@/features/health/components/health-indicator';
-import LogoSection from './logo-section';
 import MenuItem from './menu-item';
 import { MENU_ITEMS } from './config';
 
@@ -16,15 +14,7 @@ function Menu() {
     []
   );
 
-  return (
-    <nav className='flex flex-col h-full'>
-      <LogoSection />
-      <menu className='[&>li]:border-b-2'>{menuItems}</menu>
-      <div className='flex-grow flex flex-col justify-end'>
-        <HealthIndicator />
-      </div>
-    </nav>
-  );
+  return <menu>{menuItems}</menu>;
 }
 
 export default Menu;
