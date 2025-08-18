@@ -35,7 +35,7 @@ export const BoothService = {
       });
     }
 
-    return booth;
+    return booth[0];
   },
 
   async createBooth({
@@ -47,6 +47,17 @@ export const BoothService = {
     requestOwnerAddress: string;
     fullText: string;
   }) {
+    const duplicatedBooth = await db
+      .select()
+      .from(boothTable)
+      .where(eq(boothTable.id, id.toLowerCase()));
+
+    if (duplicatedBooth.length > 0) {
+      throw new HTTPException(HttpStatusCode.BadRequest, {
+        message: 'Booth already registered',
+      });
+    }
+
     const createdBooth = await SubGraphService.getCreatedBoothsByBoothId(id);
 
     if (
@@ -72,8 +83,6 @@ export const BoothService = {
         | 'REQUEST_SALE',
       blockNumber: createdBooth.blockNumber,
     };
-
-    console.log(insertData);
 
     try {
       const booth = await db.transaction(async tx => {
@@ -131,6 +140,39 @@ export const BoothService = {
     const updatedBooth = await db
       .update(boothTable)
       .set({ previewText })
+      .where(eq(boothTable.id, boothId))
+      .returning();
+
+    return updatedBooth;
+  },
+
+  async boothStartSale({
+    ownerAddress,
+    boothId,
+  }: {
+    ownerAddress: string;
+    boothId: string;
+  }) {
+    const booth = await db
+      .select()
+      .from(boothTable)
+      .where(eq(boothTable.id, boothId));
+
+    if (booth.length === 0) {
+      throw new HTTPException(HttpStatusCode.NotFound, {
+        message: 'Booth not found',
+      });
+    }
+
+    if (ownerAddress.toLowerCase() !== booth[0].owner.toLowerCase()) {
+      throw new HTTPException(HttpStatusCode.Forbidden, {
+        message: 'You are not the owner of the booth',
+      });
+    }
+
+    const updatedBooth = await db
+      .update(boothTable)
+      .set({ isSaleStarted: true })
       .where(eq(boothTable.id, boothId))
       .returning();
 

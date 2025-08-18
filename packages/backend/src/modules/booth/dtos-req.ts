@@ -18,7 +18,9 @@ export type GetBoothPaginationDTO = z.infer<
 >;
 
 export const GetBoothDtoValidationScheme = z.object({
-  boothId: z.uuid(),
+  boothId: z.string().regex(/^0x[a-f0-9]+$/, {
+    message: 'boothId should be a string of hex characters',
+  }),
 });
 
 export type GetBoothDTO = z.infer<typeof GetBoothDtoValidationScheme>;
@@ -34,7 +36,9 @@ export const CreateBoothDtoValidationScheme = z.object({
 export type CreateBoothDTO = z.infer<typeof CreateBoothDtoValidationScheme>;
 
 export const PatchBoothParamDtoValidationScheme = z.object({
-  boothId: z.uuid(),
+  boothId: z.string().regex(/^0x[a-f0-9]+$/, {
+    message: 'boothId should be a string of hex characters',
+  }),
 });
 
 export type PatchBoothParamDTO = z.infer<

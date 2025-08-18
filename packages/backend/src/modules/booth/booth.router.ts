@@ -52,7 +52,7 @@ BoothRouter.get(
 // Create Booth End-point
 BoothRouter.post(
   '/',
-  // jwtMiddleware,
+  jwtMiddleware,
   validationMiddleware(CreateBoothDtoValidationScheme, 'json'),
   async c => {
     const payload = c.get('jwtPayload') as JwtPayload;
@@ -60,7 +60,7 @@ BoothRouter.post(
 
     const booth = await BoothService.createBooth({
       id,
-      requestOwnerAddress: '0xasdfljksdf', // requestOwnerAddress: payload.address,
+      requestOwnerAddress: payload.address,
       fullText,
     });
 
@@ -82,6 +82,24 @@ BoothRouter.patch(
     const updatedBooth = await BoothService.patchBooth({
       boothId,
       previewText,
+      ownerAddress: payload.address,
+    });
+
+    return c.json(updatedBooth);
+  }
+);
+
+// Patch Booth Start-Sale
+BoothRouter.patch(
+  '/:boothId/start-sale',
+  jwtMiddleware,
+  validationMiddleware(PatchBoothParamDtoValidationScheme, 'param'),
+  async c => {
+    const payload = c.get('jwtPayload') as JwtPayload;
+    const { boothId } = c.req.valid('param') as PatchBoothParamDTO;
+
+    const updatedBooth = await BoothService.boothStartSale({
+      boothId,
       ownerAddress: payload.address,
     });
 
