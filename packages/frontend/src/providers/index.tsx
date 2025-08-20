@@ -1,5 +1,6 @@
 import { ConnectKitProvider } from 'connectkit';
 import { lazy } from 'react';
+import { TRPCProvider } from './trpc';
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -18,9 +19,11 @@ const TanStackQueryProvider = lazy(() =>
 export function Provider({ children }: ProviderProps) {
   return (
     <WagmiProvider>
-      <TanStackQueryProvider>
-        <ConnectKitProvider>{children}</ConnectKitProvider>
-      </TanStackQueryProvider>
+      <TRPCProvider>
+        <TanStackQueryProvider>
+          <ConnectKitProvider>{children}</ConnectKitProvider>
+        </TanStackQueryProvider>
+      </TRPCProvider>
     </WagmiProvider>
   );
 }
