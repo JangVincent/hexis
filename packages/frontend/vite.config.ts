@@ -21,5 +21,6 @@ export default defineConfig({
   },
   define: {
     VITE_API_HOST: JSON.stringify(process.env.VITE_API_HOST),
+    VITE_REOWN_PROJECT_ID: JSON.stringify(process.env.VITE_REOWN_PROJECT_ID),
   },
 });
