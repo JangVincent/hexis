@@ -1,7 +1,7 @@
 import React from 'react';
-import Menu from './menu';
+import Gnb from './gnb';
 
-const MemoizedMenu = React.memo(Menu);
+const MemoizedGnb = React.memo(Gnb);
 
 export default function RootLayout({
   children,
@@ -10,9 +10,9 @@ export default function RootLayout({
 }) {
   return (
     <div>
-      <nav>
-        <MemoizedMenu />
-      </nav>
+      <header>
+        <MemoizedGnb />
+      </header>
       <div>{children}</div>
     </div>
   );

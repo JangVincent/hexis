@@ -1,4 +1,5 @@
 import { ClientError, NetworkError, ServerError } from '@/lib/error';
+import env from '@/lib/schema/env';
 
 export async function fetcher<TData = unknown>({
   url,
@@ -15,7 +16,7 @@ export async function fetcher<TData = unknown>({
       ...options?.headers,
     };
 
-    const fetchUrl = external ? url : `${import.meta.env.VITE_API_HOST}${url}`;
+    const fetchUrl = external ? url : `${env.data?.VITE_API_HOST}${url}`;
 
     const res = await fetch(fetchUrl, {
       ...options,
