@@ -1,12 +1,7 @@
 import { trpcServer } from '@hono/trpc-server';
-import {
-  getUserFromHeader,
-  protectedProcedure,
-  publicProcedure,
-  router,
-} from '@lib/trpc/trpc';
-import { AuthRouter } from '@modules/auth/auth.router';
-import { BoothRouter } from '@modules/booth/booth.router';
+import { onError, publicProcedure, router } from '@lib/trpc/trpc';
+import { AuthTrpcServer } from '@modules/auth/auth.router';
+import { BoothTrpcServer } from '@modules/booth/booth.router';
 import 'dotenv/config';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
@@ -34,42 +29,24 @@ app.use(
   })
 );
 
-app.get('/', c => {
-  return c.text('Hello Hono!');
-});
-
-app.route('/auth', AuthRouter);
-app.route('/booths', BoothRouter);
-
-const trpcRouter = router({
-  hello: publicProcedure.query(({ ctx }) => {
-    console.log(ctx.user);
-  }),
-  protected: protectedProcedure.query(({ ctx }) => {
-    console.log(ctx.user);
-  }),
+app.get('/health', c => {
+  return c.json({ status: true });
 });
 
 app.use(
-  '/trpc/*',
+  '/',
   trpcServer({
-    router: trpcRouter,
-    createContext: async (_, c) => {
-      return {
-        user: await getUserFromHeader(c.req.header('authorization')),
-      };
-    },
-    onError: ({ error }) => {
-      // Delete stack trace
-      if (error.cause instanceof Error) {
-        error.cause.stack = undefined;
-      }
-      if (error.stack) {
-        error.stack = undefined;
-      }
-    },
+    router: router({
+      health: publicProcedure.query(() => {
+        return { status: true };
+      }),
+    }),
+    onError: onError,
   })
 );
+
+app.use('/auth/*', AuthTrpcServer);
+app.use('/booths/*', BoothTrpcServer);
 
 export default {
   port: process.env.PORT || 8080,

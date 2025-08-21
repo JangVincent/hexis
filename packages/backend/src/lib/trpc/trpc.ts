@@ -38,3 +38,19 @@ export async function getUserFromHeader(
   }
   return null;
 }
+
+export const createJwtContext = async (opt: any, c: Context) => {
+  return {
+    user: await getUserFromHeader(c.req.header('authorization')),
+  };
+};
+
+export const onError = ({ error }: { error: TRPCError }) => {
+  // Delete stack trace
+  if (error.cause instanceof Error) {
+    error.cause.stack = undefined;
+  }
+  if (error.stack) {
+    error.stack = undefined;
+  }
+};
