@@ -13,7 +13,9 @@ export const publicProcedure = trpc.procedure;
 export const protectedProcedure = trpc.procedure.use(opts => {
   const { ctx } = opts;
   if (!ctx.user) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    });
   }
   return opts.next({
     ctx,

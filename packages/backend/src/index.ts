@@ -43,10 +43,10 @@ app.route('/booths', BoothRouter);
 
 const trpcRouter = router({
   hello: publicProcedure.query(({ ctx }) => {
-    return `Hello ${ctx.user.address ?? 'world'}`;
+    console.log(ctx.user);
   }),
   protected: protectedProcedure.query(({ ctx }) => {
-    return `Hello ${ctx.user.address ?? 'world'}`;
+    console.log(ctx.user);
   }),
 });
 
@@ -54,10 +54,19 @@ app.use(
   '/trpc/*',
   trpcServer({
     router: trpcRouter,
-    createContext: async (opts, c) => {
+    createContext: async (_, c) => {
       return {
         user: await getUserFromHeader(c.req.header('authorization')),
       };
+    },
+    onError: ({ error }) => {
+      // Delete stack trace
+      if (error.cause instanceof Error) {
+        error.cause.stack = undefined;
+      }
+      if (error.stack) {
+        error.stack = undefined;
+      }
     },
   })
 );
