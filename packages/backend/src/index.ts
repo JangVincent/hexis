@@ -1,10 +1,15 @@
 import { trpcServer } from '@hono/trpc-server';
+import {
+  getUserFromHeader,
+  protectedProcedure,
+  publicProcedure,
+  router,
+} from '@lib/trpc/trpc';
+import { AuthRouter } from '@modules/auth/auth.router';
 import { BoothRouter } from '@modules/booth/booth.router';
 import 'dotenv/config';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { protectedProcedure, publicProcedure, router } from './lib/trpc/trpc';
-import { AuthRouter } from './modules/auth/auth.router';
 
 const app = new Hono();
 
@@ -49,6 +54,11 @@ app.use(
   '/trpc/*',
   trpcServer({
     router: trpcRouter,
+    createContext: async (opts, c) => {
+      return {
+        user: await getUserFromHeader(c.req.header('authorization')),
+      };
+    },
   })
 );
 
