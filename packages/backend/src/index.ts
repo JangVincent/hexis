@@ -1,10 +1,10 @@
+import { trpcServer } from '@hono/trpc-server';
 import { BoothRouter } from '@modules/booth/booth.router';
 import 'dotenv/config';
 import { Hono } from 'hono';
-import { AuthRouter } from './modules/auth/auth.router';
-import { trpcServer } from '@hono/trpc-server';
-import { publicProcedure, router } from './lib/trpc';
 import { cors } from 'hono/cors';
+import { protectedProcedure, publicProcedure, router } from './lib/trpc/trpc';
+import { AuthRouter } from './modules/auth/auth.router';
 
 const app = new Hono();
 
@@ -36,21 +36,19 @@ app.get('/', c => {
 app.route('/auth', AuthRouter);
 app.route('/booths', BoothRouter);
 
-const TrpcRouter = router({
-  healthCheck: publicProcedure.query(() => {
-    return {
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-    };
+const trpcRouter = router({
+  hello: publicProcedure.query(({ ctx }) => {
+    return `Hello ${ctx.user.address ?? 'world'}`;
+  }),
+  protected: protectedProcedure.query(({ ctx }) => {
+    return `Hello ${ctx.user.address ?? 'world'}`;
   }),
 });
-
-export type TrpcRouter = typeof TrpcRouter;
 
 app.use(
   '/trpc/*',
   trpcServer({
-    router: TrpcRouter,
+    router: trpcRouter,
   })
 );
 
